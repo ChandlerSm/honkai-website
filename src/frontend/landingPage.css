@@ -1,0 +1,32 @@
+body {
+    background-color: white;
+    color: black;
+}
+
+/* Dark mode styles */
+body.dark-mode {
+    background-color: black;
+    color: white;
+}
+
+body.dark-mode #landing-page-holder {
+    background-color: #222;
+}
+
+#landing-page-holder {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    padding-top: 10px;
+    gap: 10px;
+}
+
+.game-name-holder {
+    border: solid 1px;
+    width: 40%;
+    height: 50px;
+    text-align: center;
+}
+

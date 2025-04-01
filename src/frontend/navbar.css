@@ -1,0 +1,60 @@
+body.dark-mode .navbar-holder {
+    background-color: #181818;
+}
+
+body.dark-mode #left-navbar {
+    border-color: #3f3f3f;
+}
+
+.navbar-holder {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: width 0.5s ease;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.navbar-holder.open {
+    width: 300px;
+}
+
+.navbar-holder.closed {
+    width: 200px;
+}
+
+#left-navbar {
+    border-right: solid 1px;
+    height: 100%;
+    padding: 5px;
+    padding-top: none;
+    gap: 5px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.nav-buttons {
+    margin-top: 5px;
+    width: 60%;
+    background: none;
+    border: solid 1px #3f3f3f;
+}
+
+body.dark-mode .nav-buttons {
+    color: white;
+}
+
+.home-button {
+    width: 100%;
+    background: none;
+    border: none;
+}
+
+.home-button img {
+    width: 100%;  
+    height: auto;  
+}
+

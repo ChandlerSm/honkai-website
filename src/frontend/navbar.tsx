@@ -1,11 +1,15 @@
 import { ThemeContext } from "./ThemeProvider.tsx"; 
 import React, { useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, NavLink, useLocation } from "react-router-dom";
 import homeIcon from "./assets/image-removebg-preview.png"; // Import image
 import "./navbar.css";
 
 export const Navbar = ({ toggleNavbar, isOpen }) => {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const currPrefix = location.pathname.includes("Genshin-Impact") ? "Genshin-Impact" : location.pathname.includes("Star-Rail") ? "Star-Rail" : "";
+
   const { toggleTheme } = useContext(ThemeContext);
     const navButtonClicked = (destination) => {
         if (destination === "Home") {
@@ -25,10 +29,14 @@ export const Navbar = ({ toggleNavbar, isOpen }) => {
     <div className={`navbar-holder ${isOpen ? 'open' : 'closed'}`}>
       <div id="top-navbar"></div>
       <div id="left-navbar">
-      <button className="home-button" onClick={() => navButtonClicked("Home")}><img src={homeIcon} /></button>
+      <button className="home-button" onClick={() => navigate("Home")}><img src={homeIcon} /></button>
         <button className="nav-buttons" onClick={toggleNavbar}>Close</button>
         <button className="nav-buttons" onClick={toggleTheme}>Light / Dark</button>
-        <button className="nav-buttons" onClick={() => navButtonClicked("Genshin Impact")}>Genshin Impact</button>
+        {currPrefix !== "" ? (
+        <button className="nav-buttons" onClick={() => navigate(`${currPrefix}/characters`)}>Characters</button>
+        ) : (
+          <button className="nav-buttons" onClick={() => navigate("Genshin-Impact")}>Genshin Impact</button>
+        )}
       </div>
     </div>
   );

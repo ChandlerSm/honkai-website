@@ -1,0 +1,32 @@
+body.dark-mode .hsr-char-holder {
+    background-color: #222;
+}
+
+.hsr-char-holder {
+    padding-top: 10px;
+    padding-left: 50px;
+    gap: 10px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.char-holder {
+    padding-top: 50px;
+    gap: 5px;
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    justify-content: flex-start;
+}
+
+.char-box {
+    text-align: center;
+    border: solid 1px;
+    width: 200px;
+    height: 300px;
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: column;
+}

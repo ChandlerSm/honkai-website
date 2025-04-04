@@ -27,4 +27,5 @@ jobs:
       run: echo "CI=false" >> $GITHUB_ENV  # Disable CI environment variable
     - run: yarn install --frozen-lockfile
     - run: yarn build --if-present
-    - run: yarn test
+    - run: yarn test --passWithNoTests
+

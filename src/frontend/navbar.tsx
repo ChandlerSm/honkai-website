@@ -29,7 +29,7 @@ export const Navbar = ({ toggleNavbar, isOpen }) => {
     <div className={`navbar-holder ${isOpen ? 'open' : 'closed'}`}>
       <div id="top-navbar"></div>
       <div id="left-navbar">
-      <button className="home-button" onClick={() => navigate("Home")}><img src={homeIcon} /></button>
+      <button className="home-button" onClick={() => navigate("Home")}><img src={homeIcon} alt=""/></button>
         <button className="nav-buttons" onClick={toggleNavbar}>Close</button>
         <button className="nav-buttons" onClick={toggleTheme}>Light / Dark</button>
         {currPrefix !== "" ? (

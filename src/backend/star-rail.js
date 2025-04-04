@@ -1,6 +1,7 @@
 const { StarRail } = require("starrail.js");
 const sr_client = new StarRail({defaultLanguage: "en"});
 
+// More so for testing and reading data from api
 // async function fetchCharacters() {
 //     try {
 //         const characters = await sr_client.getAllCharacters();
@@ -17,6 +18,7 @@ const sr_client = new StarRail({defaultLanguage: "en"});
 // fetchCharacters();
 
 
+// Returns JSON data of all characters in Honkai Star Rail
 function getCharacters() {
     const characters = sr_client.getAllCharacters();
     

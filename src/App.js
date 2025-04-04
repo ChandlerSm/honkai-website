@@ -7,6 +7,7 @@ import { HsrLanding } from './frontend/hsrLanding.tsx';
 import { HsrCharacters } from './frontend/hsrCharacters.tsx';
 import { Login } from './frontend/login.tsx';
 import {Navbar} from './frontend/navbar.tsx';
+import { CreateUser } from './frontend/createUser.tsx';
 import {useState} from 'react';
 
 
@@ -25,6 +26,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Navigate to="/Home" />}></Route>
           <Route path="/login" element={<Login />} />
+          <Route path="/create-user" element={<CreateUser />} />
           <Route path="/Home" element={<LandingPage />}></Route>
           <Route path="/Genshin-Impact" element={<GenshinLanding />} />
           <Route path="/Star-Rail" element={<HsrLanding />} />

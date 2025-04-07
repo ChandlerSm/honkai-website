@@ -10,6 +10,7 @@ body.dark-mode .hsr-char-holder {
     display: flex;
     flex-direction: column;
     text-align: left;
+    min-height: 100vh;
 }
 
 .char-holder {

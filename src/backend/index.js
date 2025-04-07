@@ -126,6 +126,16 @@ app.post("/Star-Rail/postGuide", (request, response) => {
     }
 })
 
+app.get("/Star-Rail/Guides", async (request, response) => {
+    try {
+        const character = request.query.character;
+        const guideList = await StarRailPost.getPosts(db, "", character, 10);
+        response.status(200).json({message: "Got guide list", guideList: guideList});
+    } catch (err) {
+        response.status(404).json({message: "Could not get guide list", err});
+    }
+})
+
 app.listen("3000", () => {
     console.log("Open server on 3000");
 });

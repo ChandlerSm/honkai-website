@@ -24,6 +24,7 @@ export const Login = () => {
             localStorage.setItem('authToken', result.accessToken);
             const data = localStorage.getItem('authToken');
             console.log(`${result.message}: ${data}`);
+            navigate("/Home");
         }
             catch (err) {
                 console.log(err);

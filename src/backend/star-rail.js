@@ -45,10 +45,14 @@ function getCharacters() {
 }
 
 // Star rail Child class of posts to post to the db.
+const tablename = 'StarRailGuides';
 class StarRailPosts extends Posts {
     post(db, tableName, postDetails, username, userId) {
-        const tablename = 'HsrPosts';
         super.post(db, tablename, postDetails, username, userId);
+    }
+
+    getPosts(db, tableName, character, index) {
+        return super.getPosts(db, tablename, character, index);
     }
 }
 

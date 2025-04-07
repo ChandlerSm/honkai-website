@@ -2,13 +2,13 @@ body.dark-mode .login-holder {
     background-color: #222;
 }
 
-body.dark-mode .login-form {
-    background-color: #181818;
-}
-
 body.dark-mode .user-button {
     background-color: #181818;
     color: white;
+}
+
+body.dark-mode .login-form {
+    background-color: #181818;
 }
 
 .login-holder {
@@ -37,6 +37,10 @@ body.dark-mode .user-button {
     background: transparent;
     border: solid 1px #a7a7a7;
     border-radius: 10px;
+}
+
+body.dark-mode .input-holder {
+    color: white;
 }
 
 .user-button {

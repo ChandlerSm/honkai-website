@@ -3,7 +3,7 @@ const Posts = require("./posts.js");
 // Child class of posts to post to the db.
 class GenshinPosts extends Posts {
     post(db, tableName, postDetails, username, userId) {
-        const tablename = "GenshinPosts";
+        const tablename = "GenshinImpactGuides";
         super.post(db, tablename, postDetails, username, userId);
     }
 }

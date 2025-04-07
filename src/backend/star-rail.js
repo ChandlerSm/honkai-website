@@ -1,4 +1,5 @@
 const { StarRail } = require("starrail.js");
+const Posts = require("./posts.js");
 const sr_client = new StarRail({defaultLanguage: "en"});
 
 // More so for testing and reading data from api
@@ -43,4 +44,15 @@ function getCharacters() {
     return characterData;
 }
 
-module.exports = {getCharacters};
+// Star rail Child class of posts to post to the db.
+class StarRailPosts extends Posts {
+    post(db, tableName, postDetails, username, userId) {
+        const tablename = 'HsrPosts';
+        super.post(db, tablename, postDetails, username, userId);
+    }
+}
+
+// const StarRailPost = new StarRailPosts();
+// StarRailPost.post("db", "details", "username", 1);
+
+module.exports = {getCharacters, StarRailPosts};

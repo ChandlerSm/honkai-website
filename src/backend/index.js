@@ -1,6 +1,7 @@
 require("dotenv").config();
 
-const { getCharacters } = require("./star-rail.js");
+const { getCharacters, StarRailPosts } = require("./star-rail.js");
+const  GenshinPosts  = require("./Genshin.js");
 const {createUser} = require("./user.js");
 const express = require("express");
 const flatted = require("flatted");
@@ -87,6 +88,16 @@ app.post(`/user/login`, async (req, res) => {
 
 
 // Everything below is for Genshin
+const GenshinPost = new GenshinPosts();
+
+app.post("/Genshin-Impact/postGuide", (request, response) => {
+    try {
+        GenshinPost.post("db", "", "details", "username", 1);
+        response.sendStatus(200);
+    } catch (err) {
+        console.log("Could not post");
+    }
+});
 
 // Everything Below is for Star Rail
 // Returns a json list of all characters along with name, element, path
@@ -101,6 +112,17 @@ app.get("/Star-Rail/characters", (req, res) => {
     }
     catch (err) {
         return res.status(500).json({ message: 'Internal Server Error', error: error.message });
+    }
+})
+
+const StarRailPost = new StarRailPosts();
+
+app.post("/Star-Rail/postGuide", (request, response) => {
+    try {
+        StarRailPost.post("db", "", "details", "username", 1);
+        response.sendStatus(200);
+    } catch (err) {
+        console.log("Could not post");
     }
 })
 

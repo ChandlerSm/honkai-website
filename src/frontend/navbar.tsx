@@ -20,7 +20,7 @@ export const Navbar = ({ toggleNavbar, isOpen }) => {
         <button className="nav-buttons" onClick={toggleNavbar}>Close</button>
         <button className="nav-buttons" onClick={toggleTheme}>Light / Dark</button>
         <button className="nav-buttons" onClick={() => navigate("/Login")}>Login</button>
-        <button className="nav-buttons" onClick={() => navigate("/create-user")}>Create Accounts</button>
+        {/* <button className="nav-buttons" onClick={() => navigate("/create-user")}>Create Accounts</button> */}
         {currPrefix !== "" ? (
         <button className="nav-buttons" onClick={() => navigate(`${currPrefix}/characters`)}>Characters</button>
         ) : (

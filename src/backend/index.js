@@ -104,12 +104,6 @@ app.get("/Star-Rail/characters", (req, res) => {
     }
 })
 
-const test = () => {
-    const hsr_chars = getCharacters();
-}
-
-// getCharacters();
-
 app.listen("3000", () => {
     console.log("Open server on 3000");
 });

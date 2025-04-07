@@ -1,5 +1,7 @@
 import React, {useState} from "react";
 import { useNavigate } from "react-router-dom";
+import "./user.css";
+import homeIcon from "./assets/image-removebg-preview.png"; // Import image
 
 export const CreateUser = () => {
     const [username, setUsername] = useState("");
@@ -30,10 +32,13 @@ export const CreateUser = () => {
         }
 
     return ( 
-        <form onSubmit={handleSubmit}>
-        <input type="text" value={username} onChange={(e) => setUsername(e.target.value)}></input>
-        <input type="text" value={password} onChange={(e) => setPassword(e.target.value)}></input>
-        <button type="submit">Create User</button>
+        <div className="login-holder">
+        <button className="home-user-button" onClick={() => navigate("/Home")}><img src={homeIcon} alt=""/></button>
+        <form className="login-form" onSubmit={handleSubmit}>
+        <input className="input-holder" type="text" value={username} onChange={(e) => setUsername(e.target.value)}></input>
+        <input className="input-holder" type="text" value={password} onChange={(e) => setPassword(e.target.value)}></input>
+        <button className="user-button" type="submit">Create User</button>
     </form>
+    </div>
     )
 }

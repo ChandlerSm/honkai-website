@@ -11,19 +11,6 @@ export const Navbar = ({ toggleNavbar, isOpen }) => {
   const currPrefix = location.pathname.includes("Genshin-Impact") ? "Genshin-Impact" : location.pathname.includes("Star-Rail") ? "Star-Rail" : "";
 
   const { toggleTheme } = useContext(ThemeContext);
-    const navButtonClicked = (destination) => {
-        if (destination === "Home") {
-            navigate("/Home");
-        }   
-        else if (destination === "Genshin Impact") {
-            navigate("/Genshin-Impact");
-        }
-        else {
-            console.log("That navigation link doesn't exist: ", destination);
-        }
-    }
-
-
 
   return (
     <div className={`navbar-holder ${isOpen ? 'open' : 'closed'}`}>
@@ -32,6 +19,8 @@ export const Navbar = ({ toggleNavbar, isOpen }) => {
       <button className="home-button" onClick={() => navigate("Home")}><img src={homeIcon} alt=""/></button>
         <button className="nav-buttons" onClick={toggleNavbar}>Close</button>
         <button className="nav-buttons" onClick={toggleTheme}>Light / Dark</button>
+        <button className="nav-buttons" onClick={() => navigate("/Login")}>Login</button>
+        {/* <button className="nav-buttons" onClick={() => navigate("/create-user")}>Create Accounts</button> */}
         {currPrefix !== "" ? (
         <button className="nav-buttons" onClick={() => navigate(`${currPrefix}/characters`)}>Characters</button>
         ) : (

@@ -6,6 +6,9 @@ node_modules
 *.sql
 database
 
+# Data Sensitive
+.env
+
 # dependencies
 /node_modules
 /.pnp

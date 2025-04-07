@@ -12,6 +12,7 @@
     "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
     "flatted": "^3.3.3",
+    "jsonwebtoken": "^9.0.2",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-router-dom": "^7.5.0",

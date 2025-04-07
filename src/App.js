@@ -1,39 +1,55 @@
 import './App.css';
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-import LandingPage from "./frontend/landingPage.tsx"
+import { BrowserRouter as Router, Route, Routes, Navigate, useLocation } from 'react-router-dom';
+import LandingPage from "./frontend/landingPage.tsx";
 import { GenshinLanding } from './frontend/genshin-landing.tsx';
 import { ThemeProvider } from './frontend/ThemeProvider.tsx'; 
 import { HsrLanding } from './frontend/hsrLanding.tsx';
 import { HsrCharacters } from './frontend/hsrCharacters.tsx';
-import {Navbar} from './frontend/navbar.tsx';
-import {useState} from 'react';
-
+import { Login } from './frontend/login.tsx';
+import { Navbar } from './frontend/navbar.tsx';
+import { CreateUser } from './frontend/createUser.tsx';
+import { useState } from 'react';
 
 function App() {
   const [isOpen, setIsOpen] = useState(true); 
+  const location = useLocation();
 
   const toggleNavbar = () => {
     setIsOpen(prev => !prev); 
   };
-  return (
-      <ThemeProvider>
-      <Router>
-      <div className="App">
-      <Navbar toggleNavbar={toggleNavbar} isOpen={isOpen} />
-      <div className={`content ${isOpen ? 'collapsed' : ''}`}>
-        <Routes>
-          <Route path="/" element={<Navigate to="/Home" />}></Route>
-          <Route path="/Home" element={<LandingPage />}></Route>
-          <Route path="/Genshin-Impact" element={<GenshinLanding />} />
-          <Route path="/Star-Rail" element={<HsrLanding />} />
-          <Route path='/Star-Rail/characters' element={<HsrCharacters />} />
-        </Routes>
-        </div>
-        </div>
-      </Router>
 
-      </ThemeProvider>
+  return (
+    <div className="App">
+      {/* Conditionally render Navbar based on current route */}
+      {location.pathname.includes("/Login") || location.pathname.includes("/create-user") ? (
+        <Routes>
+          <Route path="/Login" element={<Login />} />
+          <Route path="/create-user" element={<CreateUser />} />
+        </Routes>
+      ) : (
+        <>
+          <Navbar toggleNavbar={toggleNavbar} isOpen={isOpen} />
+          <div className={`content ${isOpen ? 'collapsed' : ''}`}>
+            <Routes>
+              <Route path="/" element={<Navigate to="/Home" />} />
+              <Route path="/Home" element={<LandingPage />} />
+              <Route path="/Genshin-Impact" element={<GenshinLanding />} />
+              <Route path="/Star-Rail" element={<HsrLanding />} />
+              <Route path="/Star-Rail/characters" element={<HsrCharacters />} />
+            </Routes>
+          </div>
+        </>
+      )}
+    </div>
   );
 }
 
-export default App;
+export default function AppWithRouter() {
+  return (
+    <ThemeProvider>
+      <Router>
+        <App />
+      </Router>
+    </ThemeProvider>
+  );
+}

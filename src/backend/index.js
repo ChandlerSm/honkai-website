@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const { getCharacters } = require("./star-rail.js");
 const {createUser} = require("./user.js");
 const express = require("express");
@@ -5,6 +7,7 @@ const flatted = require("flatted");
 const app = new express();
 const cors = require("cors");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 app.use(cors());
 app.use(express.json());
@@ -21,22 +24,37 @@ const db = new sqlite3.Database('./database/database.db', (err) => {
     }
   });
 
+  // MIDDLEWARE authenticate JWT for security
+  // Should be used for any data sensitive data pull related to the user.
+  function authenticateToken(req, res, next) {
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1]; // Get the authorization token from the header
+    if (token === null) return res.status(400).send("Token invalid");
+
+    jwt.verify(token, process.env.ACCESS_SECRET_TOKEN, (err, user) => { // Verifies if the signed token matches the .env secret token
+        if (err) return res.sendStatus(401);
+        req.user = user;
+        next();
+    })
+  }
+
 // Everything related to user is below
 // Create a user
 // Parameters: username, password
 // Output: status message
-const username = "testusername";
-const password = "testpassword"; // Use Bcrypt for making passwords
 app.post("/user/create", async (req, res) => {
     try {
+        const { username, password } = req.body;
         const hashedPassword = await bcrypt.hash(password, 10);
         createUser(db, username, hashedPassword);
-        return res.status(200).send("created user successfully");
+        return res.status(200).json({message: "created user successfully"});
     } catch (err) {
         return res.status(500).json({message: "Internal Server Error", error: err.message});
     }
 })
 
+// User login REST Api
+// Checks the encrypted password and then signs a JWT to be sent back to frontend.
 app.post(`/user/login`, async (req, res) => {
     try {
         const { username, password } = req.body;
@@ -53,9 +71,10 @@ app.post(`/user/login`, async (req, res) => {
             }
 
             // Compare the password using bcrypt
-            const isMatching = await bcrypt.compare(password, user.password);
+            const isMatching = await bcrypt.compare(password, user.password); // True of false if inputted password matches
             if (isMatching) {
-                return res.status(200).send("Successful login");
+                const accessToken = jwt.sign(user.username, process.env.ACCESS_SECRET_TOKEN); // Sign a access JWT for future use.
+                return res.status(200).json({message: "Successful login", accessToken: accessToken}); // Returns success message and JWT
             } else {
                 return res.status(401).send("Invalid Login Information");
             }
@@ -84,12 +103,6 @@ app.get("/Star-Rail/characters", (req, res) => {
         return res.status(500).json({ message: 'Internal Server Error', error: error.message });
     }
 })
-
-const test = () => {
-    const hsr_chars = getCharacters();
-}
-
-// getCharacters();
 
 app.listen("3000", () => {
     console.log("Open server on 3000");

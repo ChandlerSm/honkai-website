@@ -2,7 +2,9 @@ import './App.css';
 import { BrowserRouter as Router, Route, Routes, Navigate, useLocation } from 'react-router-dom';
 import LandingPage from "./frontend/landingPage.tsx";
 import { GenshinLanding } from './frontend/genshin-landing.tsx';
+import { CharacterGuide } from './frontend/characterGuide.tsx';
 import { ThemeProvider } from './frontend/ThemeProvider.tsx'; 
+import { HsrGuides } from './frontend/hsrGuides.tsx';
 import { HsrLanding } from './frontend/hsrLanding.tsx';
 import { HsrCharacters } from './frontend/hsrCharacters.tsx';
 import { Login } from './frontend/login.tsx';
@@ -36,6 +38,8 @@ function App() {
               <Route path="/Genshin-Impact" element={<GenshinLanding />} />
               <Route path="/Star-Rail" element={<HsrLanding />} />
               <Route path="/Star-Rail/characters" element={<HsrCharacters />} />
+              <Route path="/Star-Rail/Guides" element={<HsrGuides />} />
+              <Route path="/Star-Rail/Guides/:id" element={<CharacterGuide />} />
             </Routes>
           </div>
         </>

@@ -26,9 +26,15 @@ export const HsrGuides = () => {
         navigate(`/Star-Rail/Guides/${guide.id}`, {state: {guide}});
     }
 
+    const handlePost = () => {
+        if (!localStorage.getItem('authToken')) navigate("/Login");
+        else navigate("/Star-Rail/Guide/createPost");
+    }
+
     return (
         <div className="guide-list-holder">
             <div className="sort-bar">Sort bar</div>
+            <button className="post-button" onClick={handlePost}>Create Post</button>
             {guideList.length != 0 ? (
             <div className="guide-list">
             {guideList.map((guide, index) => 

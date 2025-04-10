@@ -1,0 +1,9 @@
+body.dark-mode .create-post-holder {
+    background-color: #222;
+}
+
+.create-post-holder {
+    min-height: 100vh;
+    height: 100%;
+    padding: 50px;
+}

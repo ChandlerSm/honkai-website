@@ -6,6 +6,7 @@ import { CharacterGuide } from './frontend/characterGuide.tsx';
 import { ThemeProvider } from './frontend/ThemeProvider.tsx'; 
 import { HsrGuides } from './frontend/hsrGuides.tsx';
 import { HsrLanding } from './frontend/hsrLanding.tsx';
+import { CreatePost } from './frontend/createPost.tsx';
 import { HsrCharacters } from './frontend/hsrCharacters.tsx';
 import { Login } from './frontend/login.tsx';
 import { Navbar } from './frontend/navbar.tsx';
@@ -36,6 +37,7 @@ function App() {
               <Route path="/" element={<Navigate to="/Home" />} />
               <Route path="/Home" element={<LandingPage />} />
               <Route path="/Genshin-Impact" element={<GenshinLanding />} />
+              <Route path="/Star-Rail/Guide/createPost" element={<CreatePost /> }/>
               <Route path="/Star-Rail" element={<HsrLanding />} />
               <Route path="/Star-Rail/characters" element={<HsrCharacters />} />
               <Route path="/Star-Rail/Guides" element={<HsrGuides />} />

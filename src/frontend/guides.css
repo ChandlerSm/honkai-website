@@ -39,3 +39,7 @@ body.dark-mode .guide-box {
     padding: 20px;
     border-radius: 10px;
 }
+
+.sort-bar {
+    width: 70%;
+}

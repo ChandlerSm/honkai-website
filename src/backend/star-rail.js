@@ -47,16 +47,17 @@ function getCharacters() {
 // Star rail Child class of posts to post to the db.
 const tablename = 'StarRailGuides';
 class StarRailPosts extends Posts {
-    post(db, tableName, postDetails, username, userId) {
-        super.post(db, tablename, postDetails, username, userId);
+    post(db, tableName, character, username, postDetails, userId, postName, element, version) {
+        super.post(db, tablename, character, username, postDetails, userId, postName, element, version);
     }
 
     getPosts(db, tableName, character, index) {
         return super.getPosts(db, tablename, character, index);
     }
-}
 
-// const StarRailPost = new StarRailPosts();
-// StarRailPost.post("db", "details", "username", 1);
+    getYourPosts(db, tableName, userId) {
+        return super.getYourPosts(db, tablename, userId);
+    }
+}
 
 module.exports = {getCharacters, StarRailPosts};

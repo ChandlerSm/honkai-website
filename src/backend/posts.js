@@ -6,9 +6,14 @@ class Posts {
     // postDetails: The text of the post being made
     // username: username of the poster
     // userId: user ID of the poster
-    post(db, tableName, postDetails, username, userId) {
-        console.log(`${username}(${userId}) posted ${postDetails} to ${tableName}`);
-        // Insert SQL query to post to the db
+    post(db, tableName, character, username, postDetails, userId, postName, element, version) {
+            db.all(`INSERT INTO StarRailGuides (name, username, postDetails, posterID, gameCharacter,
+                charElement, gameVersion) 
+                 VALUES (?, ?, ?, ?, ?, ?, ?);`, [postName, username, postDetails, userId, character, element, version], 
+                 (err) => {
+                    if (err) console.log("Could not make post", err);
+                    else console.log("successfully uploaded");
+                 })
     }
 
     // Parameters: 
@@ -21,7 +26,7 @@ class Posts {
             let params;
             let query;
             if (character === "") {
-                query = `SELECT * FROM ${tableName} WHERE id < ?`;
+                query = `SELECT * FROM ${tableName} LIMIT ?`;
                 params = [index];
             }
             else {
@@ -33,6 +38,15 @@ class Posts {
                 else {
                     resolve(guides);
                 }
+            })
+        })
+    }
+
+    getYourPosts(db, tableName, id) {
+        return new Promise((resolve, reject) => {
+            db.all(`SELECT * FROM ${tableName} WHERE posterID = ?`, [id], (err, guides) => {
+                if (err) reject("Could not get guides");
+                else resolve(guides);
             })
         })
     }

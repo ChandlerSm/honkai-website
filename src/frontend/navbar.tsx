@@ -40,6 +40,7 @@ export const Navbar = ({ toggleNavbar, isOpen }) => {
       <button className="home-button" onClick={() => navigate("Home")}><img src={icon} alt=""/></button>
         <button className="nav-buttons" onClick={toggleNavbar}>{isOpen ? "close" : "open"}</button>
         <button className="nav-buttons" onClick={toggleTheme}>Light / Dark</button>
+        <button className="nav-buttons" onClick={() => navigate(`Your-Posts`)}>Your Guides</button>
         {!isLoggedIn && (
           <button className="nav-buttons" onClick={() => navigate("/Login")}>Login</button>
         )}

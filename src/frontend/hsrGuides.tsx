@@ -19,7 +19,7 @@ export const HsrGuides = () => {
         }
 
         fetchGuides();
-        console.log(guideList);
+        console.log("Guide List", guideList);
     }, [character]);
 
     const handleClick = (guide) => {

@@ -74,7 +74,7 @@ app.post(`/user/login`, async (req, res) => {
             // Compare the password using bcrypt
             const isMatching = await bcrypt.compare(password, user.password); // True of false if inputted password matches
             if (isMatching) {
-                const accessToken = jwt.sign(user.username, process.env.ACCESS_SECRET_TOKEN); // Sign a access JWT for future use.
+                const accessToken = jwt.sign({username: user.username, id: user.id}, process.env.ACCESS_SECRET_TOKEN); // Sign a access JWT for future use.
                 return res.status(200).json({message: "Successful login", accessToken: accessToken}); // Returns success message and JWT
             } else {
                 return res.status(401).send("Invalid Login Information");
@@ -90,9 +90,9 @@ app.post(`/user/login`, async (req, res) => {
 // Everything below is for Genshin
 const GenshinPost = new GenshinPosts();
 
-app.post("/Genshin-Impact/postGuide", (request, response) => {
+app.post("/Genshin-Impact/postGuide", authenticateToken, (request, response) => {
     try {
-        GenshinPost.post("db", "", "details", "username", 1);
+        GenshinPost.post("db", "", "details", request.user.username, 1);
         response.sendStatus(200);
     } catch (err) {
         console.log("Could not post");
@@ -117,12 +117,14 @@ app.get("/Star-Rail/characters", (req, res) => {
 
 const StarRailPost = new StarRailPosts();
 
-app.post("/Star-Rail/postGuide", (request, response) => {
+app.post("/Star-Rail/postGuide", authenticateToken, (request, response) => {
     try {
-        StarRailPost.post("db", "", "details", "username", 1);
+        const { postName, character, element, version, details } = request.body;
+        console.log(request.body);
+        StarRailPost.post(db, "", character, request.user.username, details, request.user.id, postName, element, version);
         response.sendStatus(200);
     } catch (err) {
-        console.log("Could not post");
+        response.status(500).json({message: "Could not upload to server"});
     }
 })
 
@@ -133,6 +135,16 @@ app.get("/Star-Rail/Guides", async (request, response) => {
         response.status(200).json({message: "Got guide list", guideList: guideList});
     } catch (err) {
         response.status(404).json({message: "Could not get guide list", err});
+    }
+})
+
+app.get("/getYourPosts", authenticateToken, async (request, response) => {
+    try {
+        const guides = await StarRailPost.getYourPosts(db, "", request.user.id);
+        console.log(guides);
+        response.status(200).json({message: "Got your posts!", guidesList: guides});
+    } catch (err) {
+        response.status(404).json({message: "Could not find data", err: err});
     }
 })
 

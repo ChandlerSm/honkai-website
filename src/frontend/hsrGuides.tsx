@@ -9,7 +9,7 @@ export const HsrGuides = () => {
     const [character, setCharacter] = useState("");
     useEffect(() => {
             const fetchGuides = async () => {
-            const response = await fetch(`http://localhost:3000/Star-Rail/Guides?character=${character}`, {
+            const response = await fetch(`http://localhost:3000/v1/Star-Rail/Guides?character=${character}`, {
                 method: 'GET',
                 headers: { 'Content-Type': 'application/json' }
             })

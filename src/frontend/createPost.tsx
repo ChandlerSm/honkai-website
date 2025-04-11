@@ -33,7 +33,7 @@ export const CreatePost = () => {
         }
 
         try {
-            const response = await fetch('http://localhost:3000/Star-Rail/postGuide', {
+            const response = await fetch('http://localhost:3000/v1/Star-Rail/postGuide', {
                 method: 'POST',
                 headers: { 
                     'Content-Type': 'application/json',

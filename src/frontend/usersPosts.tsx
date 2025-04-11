@@ -17,7 +17,7 @@ export const UserPosts = () => {
         if (token) {
             const fetchData = async () => {
                 try {
-                    const response = await fetch(`http://localhost:3000/getYourPosts`, {
+                    const response = await fetch(`http://localhost:3000/v1/userPosts`, {
                         method: 'GET',
                         headers: { 
                             'Content-Type': 'application/json',

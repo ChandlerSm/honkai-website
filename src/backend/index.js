@@ -117,7 +117,7 @@ app.get("/Star-Rail/characters", (req, res) => {
 
 const StarRailPost = new StarRailPosts();
 
-app.post("/Star-Rail/postGuide", authenticateToken, (request, response) => {
+app.post("/v1/Star-Rail/postGuide", authenticateToken, (request, response) => {
     try {
         const { postName, character, element, version, details } = request.body;
         console.log(request.body);
@@ -128,7 +128,7 @@ app.post("/Star-Rail/postGuide", authenticateToken, (request, response) => {
     }
 })
 
-app.get("/Star-Rail/Guides", async (request, response) => {
+app.get("/v1/Star-Rail/Guides", async (request, response) => {
     try {
         const character = request.query.character;
         const guideList = await StarRailPost.getPosts(db, "", character, 10);
@@ -138,7 +138,7 @@ app.get("/Star-Rail/Guides", async (request, response) => {
     }
 })
 
-app.get("/getYourPosts", authenticateToken, async (request, response) => {
+app.get("/v1/userPosts", authenticateToken, async (request, response) => {
     try {
         const guides = await StarRailPost.getYourPosts(db, "", request.user.id);
         console.log(guides);

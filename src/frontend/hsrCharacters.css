@@ -2,6 +2,10 @@ body.dark-mode .hsr-char-holder {
     background-color: #222;
 }
 
+body.dark-mode .character-list-empty {
+    background-color: #222;
+}
+
 .hsr-char-holder {
     padding-top: 10px;
     padding-left: 50px;
@@ -30,4 +34,31 @@ body.dark-mode .hsr-char-holder {
     display: flex;
     justify-content: flex-end;
     flex-direction: column;
+}
+
+.character-list-empty {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.loading-image {
+    width: 300px;
+    height: 300px;
+    animation: moveUpDown 1.5s ease-in-out infinite; 
+    border-radius: 500px;
+}
+
+@keyframes moveUpDown {
+    0% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-20px); 
+    }
+    100% {
+        transform: translateY(0); 
+    }
 }

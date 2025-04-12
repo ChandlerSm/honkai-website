@@ -128,7 +128,7 @@ app.post("/v1/Star-Rail/postGuide", authenticateToken, (request, response) => {
     }
 })
 
-app.get("/v1/Star-Rail/Guides", async (request, response) => {
+app.get("/v1/Star-Rail/Guides", async (request, response) => { // Preferably would like to add element={element} for querying by element
     try {
         const character = request.query.character;
         const guideList = await StarRailPost.getPosts(db, "", character, 10);

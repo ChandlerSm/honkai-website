@@ -1,6 +1,7 @@
 import "./hsrCharacters.css";
 import React, {useState, useEffect} from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import fireflyIcon from "./assets/firefly-removebg-preview.png";
 
 export const HsrCharacters = () => {
     const [charactersList, setCharactersList] = useState([]);
@@ -16,6 +17,8 @@ export const HsrCharacters = () => {
     console.log("test", charactersList);
 
     return (
+        <div>
+    {charactersList.length != 0 ? (
         <div className="hsr-char-holder">
             <div>Welcome to the HSR Character List</div>
             <div className="char-holder">
@@ -24,6 +27,12 @@ export const HsrCharacters = () => {
             ))}
         </div>
         </div>
-        
+    ) : (
+        <div className="character-list-empty">
+        <img src={fireflyIcon} alt="" className="loading-image"></img>
+        <h1>Loading Guides...</h1>
+        </div>
+    )}
+        </div>
     )
 }

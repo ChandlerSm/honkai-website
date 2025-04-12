@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import "./createPost.css";
 
 export const CreatePost = () => {
@@ -9,11 +10,26 @@ export const CreatePost = () => {
     const [details, setDetails] = useState("");
     const [token, setToken] = useState(null);
     const [errorMessage, setErrorMessage] = useState(""); // State for error messages
+    const [characterList, setCharactersList] = useState([]);
+    const elementList = ["Ice", "Imaginary", "Quantum", "Fire", "Wind", "Lightning", "Physical"];
+    const hsrVersions = [
+        '1.0', '1.1', '1.2', '1.3', '1.4', '1.5', '1.6',
+        '2.0', '2.1', '2.2', '2.3', '2.4', '2.5', '2.6', '2.7',
+        '3.0', '3.1', '3.2'
+      ];
+      const navigate = useNavigate();
 
     useEffect(() => {
         if (localStorage.getItem('authToken')) {
             setToken(localStorage.getItem('authToken'));
         }
+    }, []);
+
+    useEffect(() => {
+            // Fetches all characters name from star rail api.
+            fetch("http://localhost:3000/Star-Rail/characters")
+            .then(res => res.json())
+            .then(data => {console.log(data); setCharactersList(data);}); 
     }, []);
 
     const validateForm = () => {
@@ -46,6 +62,7 @@ export const CreatePost = () => {
         } catch (err) {
             console.log(err);
         }
+        navigate("/Your-Posts")
     };
 
     return (
@@ -59,31 +76,44 @@ export const CreatePost = () => {
                         onChange={(e) => setPostName(e.target.value)} 
                         className="top-input" 
                     />
-                    <input 
+                    <select 
                         value={character} 
-                        placeholder="Character" 
                         onChange={(e) => setCharacter(e.target.value)} 
-                        className="top-input" 
-                    />
-                    <input 
+                        className="top-input"
+                    >
+                        <option value="">Select Character</option>
+                        {characterList.map((char, index) => (
+                            <option key={index} value={char.name}>{char.name}</option>
+                        ))}
+                    </select>
+                    <select 
                         value={element} 
-                        placeholder="Element" 
                         onChange={(e) => setElement(e.target.value)} 
-                        className="top-input" 
-                    />
-                    <input 
+                        className="top-input"
+                    >
+                        <option value="">Select Element</option>
+                        {elementList.map((el, index) => (
+                            <option key={index} value={el}>{el}</option>
+                        ))}
+                    </select>
+                    <select 
                         value={version} 
-                        placeholder="Version" 
                         onChange={(e) => setVersion(e.target.value)} 
-                        className="top-input" 
-                    />
+                        className="top-input"
+                    >
+                        <option value="">Select Version</option>
+                        {hsrVersions.map((version, index) => (
+                            <option key={index} value={version}>{version}</option>
+                        ))}
+                    </select>
                 </div>
-                <input 
+                <textarea 
                     value={details} 
                     placeholder="Details" 
                     onChange={(e) => setDetails(e.target.value)} 
-                    className="details" 
+                    className="details"
                 />
+
                 {errorMessage && <div className="error-message">{errorMessage}</div>}
                 <button className="post-button" type="submit">Create Post</button>
             </form>

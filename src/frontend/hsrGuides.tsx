@@ -1,12 +1,27 @@
 import React, {useEffect, useState} from "react";
 import { useNavigate } from "react-router-dom";
-import "./guides.css"
+import "./guides.css";
+import fireflyIcon from "./assets/firefly-removebg-preview.png";
 
 // Page to show a list of all the guides for HSR
 export const HsrGuides = () => {
     const navigate = useNavigate();
     const [guideList, setGuideList] = useState([]);
     const [character, setCharacter] = useState("");
+    const [characterList, setCharactersList] = useState([]);
+    const hsrVersions = [
+        '1.0', '1.1', '1.2', '1.3', '1.4', '1.5', '1.6',
+        '2.0', '2.1', '2.2', '2.3', '2.4', '2.5', '2.6', '2.7',
+        '3.0', '3.1', '3.2'
+      ];
+
+    useEffect(() => {
+            // Fetches all characters name from star rail api.
+            fetch("http://localhost:3000/Star-Rail/characters")
+            .then(res => res.json())
+            .then(data => {console.log(data); setCharactersList(data);}); 
+    }, []);
+
     useEffect(() => {
             const fetchGuides = async () => {
             const response = await fetch(`http://localhost:3000/v1/Star-Rail/Guides?character=${character}`, {
@@ -33,7 +48,18 @@ export const HsrGuides = () => {
 
     return (
         <div className="guide-list-holder">
-            <div className="sort-bar">Sort bar</div>
+            <div className="sort-bar">
+            <select 
+                        value={character} 
+                        onChange={(e) => setCharacter(e.target.value)} 
+                        className="top-input"
+                    >
+                        <option value="">Select Character</option>
+                        {characterList.map((char, index) => (
+                            <option key={index} value={char.name}>{char.name}</option>
+                        ))}
+            </select>
+            </div>
             <button className="post-button" onClick={handlePost}>Create Post</button>
             {guideList.length != 0 ? (
             <div className="guide-list">
@@ -47,7 +73,10 @@ export const HsrGuides = () => {
             )}
             </div>
             ) : (
-                <div className="guide-list"><h1>No guides available</h1></div>
+                <div className="guide-list-empty">
+                    <img src={fireflyIcon} alt="" className="loading-image"></img>
+                    <h1>Loading Guides...</h1>
+                </div>
             )}
         </div>
     )

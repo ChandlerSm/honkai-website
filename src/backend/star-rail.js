@@ -55,6 +55,14 @@ class StarRailPosts extends Posts {
         return super.getPosts(db, tablename, character, index);
     }
 
+    editPost(db, tableName, id, updatedData) {
+        super.editPost(db, tablename, id, updatedData);
+    }
+
+    deletePost(db, tableName, id) {
+        super.deletePost(db, tablename, id);
+    }
+
     getYourPosts(db, tableName, userId) {
         return super.getYourPosts(db, tablename, userId);
     }

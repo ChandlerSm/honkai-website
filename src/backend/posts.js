@@ -42,6 +42,20 @@ class Posts {
         })
     }
 
+    editPost(db, tableName, id, updatedData) {
+        db.run(`UPDATE ${tableName} SET postDetails = ? WHERE id = ?`, [updatedData, id], (err) => {
+            if (err) return console.log("Could not update post", err);
+            console.log("Updated post");
+        })
+    }
+
+    deletePost(db, tableName, id) {
+        db.all(`DELETE FROM ${tableName} WHERE id = ?`, [id], (err) => {
+            if (err) return console.log("Could not delete post: ", err);
+            console.log("Successfully deleted post");
+        })
+    }
+
     getYourPosts(db, tableName, id) {
         return new Promise((resolve, reject) => {
             db.all(`SELECT * FROM ${tableName} WHERE posterID = ?`, [id], (err, guides) => {

@@ -11,6 +11,7 @@ The `Posts` class provides functionality for:
 - Posting guides to a database.
 - Retrieving guides from a database by character.
 - Fetching a user's own posted guides.
+- Editing and deleting posts.
 
 ## **Class: Posts**
 
@@ -80,6 +81,41 @@ The `Posts` class provides functionality for:
   - Resolves with the list of the user's guides.
   - Rejects with the message `Could not get guides` if an error occurs.
 
+### 4. `editPost(db, tableName, id, updatedData)`
+- **Description**: Edits an existing post by updating the `postDetails` for a specified row in the database.
+- **Parameters**:
+  - `db`: The database object used to update the data.
+  - `tableName`: The name of the table to update data in (e.g., `StarRailGuides`).
+  - `id`: The unique ID of the post to update.
+  - `updatedData`: The new content for the `postDetails` field.
+
+- **Example**:
+  ```js
+  const postInstance = new Posts();
+  postInstance.editPost(db, 'StarRailGuides', 1, 'Updated guide content');
+  ```
+
+- **Response**:
+  - Logs `Updated post` if the post is successfully updated.
+  - Logs `Could not update post` if an error occurs during the update process.
+
+### 5. `deletePost(db, tableName, id)`
+- **Description**: Deletes a post from the specified table in the database based on the given `id`.
+- **Parameters**:
+  - `db`: The database object used to delete the post.
+  - `tableName`: The name of the table to delete data from (e.g., `StarRailGuides`).
+  - `id`: The unique ID of the post to delete.
+
+- **Example**:
+  ```js
+  const postInstance = new Posts();
+  postInstance.deletePost(db, 'StarRailGuides', 1);
+  ```
+
+- **Response**:
+  - Logs `Successfully deleted post` if the post is deleted successfully.
+  - Logs `Could not delete post` if an error occurs during the deletion process.
+
 ---
 
 ## **Usage Example**
@@ -102,6 +138,12 @@ postInstance.getPosts(db, 'StarRailGuides', 'Himeko', 10)
 postInstance.getYourPosts(db, 'StarRailGuides', 1)
   .then(userGuides => console.log(userGuides))
   .catch(error => console.error(error));
+
+// Editing an existing post
+postInstance.editPost(db, 'StarRailGuides', 1, 'Updated guide content');
+
+// Deleting a post
+postInstance.deletePost(db, 'StarRailGuides', 1);
 ```
 
 ---
@@ -121,6 +163,3 @@ module.exports = Posts;
 ```
 
 ---
-
-This documentation outlines the functionality of the `Posts` class and its methods. It describes how to use the class to interact with a database for posting, retrieving, and managing guides related to characters in a game like Star Rail.
-```

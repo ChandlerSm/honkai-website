@@ -63,7 +63,9 @@ export const UserPosts = () => {
                     </div>
                 </div>
             ) : (
+                <div className="user-posts-holder">
                 <h1>You have no posts</h1>
+                </div>
             )}
         </div>
     );

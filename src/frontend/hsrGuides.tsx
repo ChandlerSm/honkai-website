@@ -9,6 +9,7 @@ export const HsrGuides = () => {
     const [guideList, setGuideList] = useState([]);
     const [character, setCharacter] = useState("");
     const [characterList, setCharactersList] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
     const hsrVersions = [
         '1.0', '1.1', '1.2', '1.3', '1.4', '1.5', '1.6',
         '2.0', '2.1', '2.2', '2.3', '2.4', '2.5', '2.6', '2.7',
@@ -24,13 +25,15 @@ export const HsrGuides = () => {
 
     useEffect(() => {
             const fetchGuides = async () => {
-            const response = await fetch(`http://localhost:3000/v1/Star-Rail/Guides?character=${character}`, {
-                method: 'GET',
-                headers: { 'Content-Type': 'application/json' }
-            })
+                setIsLoading(true);
+                const response = await fetch(`http://localhost:3000/v1/Star-Rail/Guides?character=${character}`, {
+                    method: 'GET',
+                    headers: { 'Content-Type': 'application/json' }
+                })
 
-            const result =  await response.json();
-            setGuideList(result.guideList);
+                const result =  await response.json();
+                setGuideList(result.guideList);
+                setIsLoading(false);
         }
 
         fetchGuides();
@@ -61,23 +64,28 @@ export const HsrGuides = () => {
             </select>
             </div>
             <button className="post-button" onClick={handlePost}>Create Post</button>
-            {guideList.length != 0 ? (
-            <div className="guide-list">
-            {guideList.map((guide, index) => 
-                <div key={index} className="guide-box" style={{cursor: "pointer"}} onClick={() => {handleClick(guide);}}>
-                    <h1>{guide.name}</h1>
-                    <p>By: {guide.username}</p>
-                    <p>Version: {guide.gameVersion}</p>
-                    <p>Created: {guide.creationDate}</p>
+            {isLoading ? (
+                <div className="guide-list-empty">
+                    <img src={fireflyIcon} alt="" className="loading-image" />
+                    <h1>Loading Guides...</h1>
                 </div>
-            )}
-            </div>
+            ) : guideList.length > 0 ? (
+                <div className="guide-list">
+                    {guideList.map((guide, index) => (
+                        <div key={index} className="guide-box" style={{ cursor: "pointer" }} onClick={() => { handleClick(guide); }}>
+                            <h1>{guide.name}</h1>
+                            <p>By: {guide.username}</p>
+                            <p>Version: {guide.gameVersion}</p>
+                            <p>Created: {guide.creationDate}</p>
+                        </div>
+                    ))}
+                </div>
             ) : (
                 <div className="guide-list-empty">
-                    <img src={fireflyIcon} alt="" className="loading-image"></img>
-                    <h1>Loading Guides...</h1>
+                    <h1>No Guides Found</h1>
                 </div>
             )}
         </div>
-    )
+    );
+    
 }

@@ -142,7 +142,16 @@ app.post("/v1/Star-Rail/postGuide", authenticateToken, (request, response) => {
 app.get("/v1/Star-Rail/Guides", async (request, response) => { // Preferably would like to add element={element} for querying by element
     try {
         const character = request.query.character;
-        const guideList = await StarRailPost.getPosts(db, "", character, 10);
+        const guideList = await StarRailPost.getPosts(db, "", character, 10);   
+
+        // Reverse the list using two pointers
+        let start = 0;
+        let end = guideList.length - 1; 
+        while (start < end) { 
+            [guideList[start], guideList[end]] = [guideList[end], guideList[start]];
+            start++;
+            end--;
+        }
         response.status(200).json({message: "Got guide list", guideList: guideList});
     } catch (err) {
         response.status(404).json({message: "Could not get guide list", err});
@@ -154,9 +163,9 @@ app.get("/v1/Star-Rail/Guides", async (request, response) => { // Preferably wou
 // authenticateToken to verify you can delete the post under your-posts.
 // Parameters:
 // id: The id of the post you want to delete.
-app.delete("/v1/Star-Rail/deletePost", authenticateToken, (request, response) => {
+app.delete("/v1/Star-Rail/deletePost/:id", authenticateToken, (request, response) => {
     try {
-        const id = request.body.id;
+        const {id} = request.params;
         StarRailPost.deletePost(db, "", id);
         response.status(200).send("Successfully deleted post");
     }

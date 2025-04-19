@@ -18,3 +18,36 @@ body.dark-mode .character-guide-holder {
     width: 100%;
     border-bottom: solid 1px;
 }
+
+.edit-form {
+    margin-top: 10px;
+    width: 100%;
+    min-height: 300px;
+}
+
+.edit-text {
+    height: 100%;
+    min-height: 300px;
+    width: 100%;
+    font-size: 20px;
+}
+
+.dots {
+    border-radius: 50px;
+    border: solid 1px;
+    width: 3px;
+    height: 3px;
+    margin-top: 2px;
+}
+
+.dropdown-toggle {
+    gap: 5px;
+}
+
+.dropdown-menu {
+    margin-top: 5px;
+    border: solid 1px;
+    width: 5%;
+    padding: 5px;
+    border-radius: 5px;
+}

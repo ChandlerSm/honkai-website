@@ -84,6 +84,35 @@ const userGuides = starRailPost.getYourPosts(db, 'StarRailGuides', 1);
 console.log(userGuides);
 ```
 
+#### 2.4 `deletePost(db, tableName, id)`
+- **Description**: Deletes a specific post at an id, usuable only on posts made by the user.
+- **Parameters**:
+  - `db`: The database instance.
+  - `tableName`: The table to query from (uses `StarRailGuides` by default).
+  - `id`: The ID of the user whose posts are to be retrieved.
+
+- **Example**:
+```js
+const starRailPost = new StarRailPosts();
+const userGuides = starRailPost.deletePost(db, 'StarRailGuides', 1);
+console.log(userGuides);
+```
+
+#### 2.4 `editPost(db, tableName, id, updatedData)`
+- **Description**: Edits a specific post at an id, usuable only on posts made by the user.
+- **Parameters**:
+  - `db`: The database instance.
+  - `tableName`: The table to query from (uses `StarRailGuides` by default).
+  - `id`: The ID of the user whose posts are to be retrieved.
+  - `updatedData`: The data that you want to update, be it post details, post name, post character.
+
+- **Example**:
+```js
+const starRailPost = new StarRailPosts();
+const userGuides = starRailPost.editPost(db, 'StarRailGuides', 1, {"postDetails": "updated details"});
+console.log(userGuides);
+```
+
 ---
 
 ## **Exports**

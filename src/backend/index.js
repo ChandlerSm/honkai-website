@@ -117,6 +117,14 @@ app.get("/Star-Rail/characters", (req, res) => {
 
 const StarRailPost = new StarRailPosts();
 
+// Post a guide to the StarRailGuides DB table.
+// Only usable if you are logged in.
+// Parameters:
+// postName: The name of the post.
+// character: The character the user made the guide for.
+// Element: The element that the character is.
+// Version: The version of the game you are making the guide for.
+// details: The main details/body of the post.
 app.post("/v1/Star-Rail/postGuide", authenticateToken, (request, response) => {
     try {
         const { postName, character, element, version, details } = request.body;
@@ -128,16 +136,62 @@ app.post("/v1/Star-Rail/postGuide", authenticateToken, (request, response) => {
     }
 })
 
+// Get the guides of all characters under Star Rail
+// url parameters:
+// character: The character you want to sort by.
 app.get("/v1/Star-Rail/Guides", async (request, response) => { // Preferably would like to add element={element} for querying by element
     try {
         const character = request.query.character;
-        const guideList = await StarRailPost.getPosts(db, "", character, 10);
+        const guideList = await StarRailPost.getPosts(db, "", character, 10);   
+
+        // Reverse the list using two pointers
+        let start = 0;
+        let end = guideList.length - 1; 
+        while (start < end) { 
+            [guideList[start], guideList[end]] = [guideList[end], guideList[start]];
+            start++;
+            end--;
+        }
         response.status(200).json({message: "Got guide list", guideList: guideList});
     } catch (err) {
         response.status(404).json({message: "Could not get guide list", err});
     }
 })
 
+// Deletes a post by id.
+// Only usable on posts made by the current user.
+// authenticateToken to verify you can delete the post under your-posts.
+// Parameters:
+// id: The id of the post you want to delete.
+app.delete("/v1/Star-Rail/deletePost/:id", authenticateToken, (request, response) => {
+    try {
+        const {id} = request.params;
+        StarRailPost.deletePost(db, "", id);
+        response.status(200).send("Successfully deleted post");
+    }
+    catch (err) {
+        response.status(404).send("Could not delete post");
+    }
+})
+
+// Edits a post by id.
+// Only usable on posts made by the current user.
+// authenticateToken to verify you can delete the post under your-posts.
+// Parameters:
+// id: The id of the post you want to update
+// updatedData: JSON data holding the things you want to update (e.g. "updatedData" : "Updated post details");
+app.put("/v1/Star-Rail/update/:id", authenticateToken, async (request, response) => {
+    try {
+        const { id } = request.params;
+        const updatedData = request.body.updatedData;
+        await StarRailPost.editPost(db, "", id, updatedData);
+        response.status(200).send("Updated post");
+    } catch (err) {
+        response.status(404).send("Could not find post");
+    }
+})
+
+// Pulls the current users posts to display
 app.get("/v1/userPosts", authenticateToken, async (request, response) => {
     try {
         const guides = await StarRailPost.getYourPosts(db, "", request.user.id);

@@ -32,4 +32,15 @@ const app = new express();
         })
     }
 
-module.exports = {createUser};
+    const deleteUser = (db, id, username) => {
+        db.all('DELETE FROM user WHERE id = ? AND username = ?', [id, username], (err) => {
+            if (err) {
+                console.log("Could not delete user", err);
+            } 
+            else {
+                console.log(`Deleted user: ${username} (${id})`);
+            }
+        })
+    }
+
+module.exports = {createUser, deleteUser};

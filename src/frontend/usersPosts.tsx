@@ -26,7 +26,7 @@ export const UserPosts = () => {
                     });
 
                     const result = await response.json();
-                    console.log(result);  
+                    // console.log(result);  
                     if (result.guidesList) {
                         setUsersPosts(result.guidesList.reverse());  
                     }
@@ -39,9 +39,9 @@ export const UserPosts = () => {
         }
     }, [token]);  
 
-    useEffect(() => {
-        console.log(usersPosts);
-    }, [usersPosts]); 
+    // useEffect(() => {
+    //     console.log(usersPosts);
+    // }, [usersPosts]); 
 
     const handleClick = (guide) => {
         navigate(`/Star-Rail/Guides/${guide.id}`, {state: {guide}});

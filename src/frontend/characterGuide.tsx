@@ -19,9 +19,8 @@ export const CharacterGuide = () => {
             const payload = token.split('.')[1];
             const decodedPayload = JSON.parse(atob(payload));
             setUserId(decodedPayload.id);
-            console.log(userId);
         }
-        console.log(guide.posterID);
+        // console.log(guide.posterID);
     }, []);
 
     const handleDropdownToggle = () => {
@@ -29,6 +28,10 @@ export const CharacterGuide = () => {
     };
 
     const handleDelete = async () => {
+        if (!userId) {
+            alert("User ID is not available. Please try again later.");
+            return;  // Don't proceed if userId is undefined
+        }
         const isConfirmed = window.confirm('Are you sure you want to delete this guide?');
         if (isConfirmed) {
             try {
@@ -37,8 +40,12 @@ export const CharacterGuide = () => {
                     headers: { 
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${token}` // Authorization header with JWT token
-                    }
-                });
+                    },
+                    body: JSON.stringify({
+                        userId: userId, 
+                        posterId: guide.posterID 
+                    }),
+                }); 
     
                 if (response.ok) {
                     // Handle success, maybe show a success message or reset form
@@ -69,7 +76,7 @@ export const CharacterGuide = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         // // Handle form submission (e.g., API call to update guide)
-        console.log('Updated Guide:', updatedGuide);
+        // console.log('Updated Guide:', updatedGuide);
         
         try {
             const response = await fetch(`http://localhost:3000/v1/Star-Rail/update/${guide?.id}`, {
@@ -89,6 +96,14 @@ export const CharacterGuide = () => {
         setIsEditing(false); // After saving, stop editing
         navigate("/Your-Posts")
     };
+
+    // useEffect(() => {
+    //     if (userId) {
+    //         console.log("User ID set:", userId);
+    //     } else {
+    //         console.log("User ID not yet set.");
+    //     }
+    // }, [userId]);
 
     const showEditDeleteOptions = userId === guide?.posterID;
 

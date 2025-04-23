@@ -2,7 +2,7 @@ require("dotenv").config();
 
 const { getCharacters, StarRailPosts } = require("./star-rail.js");
 const  GenshinPosts  = require("./Genshin.js");
-const {createUser} = require("./user.js");
+const {createUser, deleteUser} = require("./user.js");
 const express = require("express");
 const flatted = require("flatted");
 const app = new express();
@@ -51,6 +51,25 @@ app.post("/user/create", async (req, res) => {
         return res.status(200).json({message: "created user successfully"});
     } catch (err) {
         return res.status(500).json({message: "Internal Server Error", error: err.message});
+    }
+})
+
+// Deletes a user
+// Should be restricted by authenticateToken, only not for testing
+// Parameters:
+// id: ID of the user requesting the delete
+// Username: Username of the user requesting the delete
+// Output: Status if deleted account or not.
+app.delete("/user/delete/:id/:username", authenticateToken, async (req, res) => {
+    try {
+        // Send token and verify that the token id and id in the param are the same.
+        const { id, username } = req.params;
+        const {user} = req; // Should hold id and username from JWToken to verify
+        // if (user.id !== id) return res.status(403).send("Cannot delete a different account");
+        deleteUser(db, id, username);
+        res.status(200).send("Successfully deleted account");
+    } catch (err) {
+        return res.status(404).send("Could not delete user");
     }
 })
 
@@ -166,6 +185,13 @@ app.get("/v1/Star-Rail/Guides", async (request, response) => { // Preferably wou
 app.delete("/v1/Star-Rail/deletePost/:id", authenticateToken, (request, response) => {
     try {
         const {id} = request.params;
+        const { userId, posterId } = request.body;
+        console.log(userId, posterId);
+
+        if (userId !== posterId) { // Checks if your id is the same as the poster id.
+            return res.status(403).send("Invalid delete, not your post");
+        }
+        
         StarRailPost.deletePost(db, "", id);
         response.status(200).send("Successfully deleted post");
     }

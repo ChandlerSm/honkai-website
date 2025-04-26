@@ -21,25 +21,34 @@ class Posts {
     // tableName, name of the table to post to.
     // character: character to sort by, if null should get all posts
     // index: pagination index for frontend to prevent pulling whole db.
-    getPosts(db, tableName, character, index) {
+    getPosts(db, tableName, character, offset, limit) {
         return new Promise((resolve, reject) => {
             let params;
             let query;
             if (character === "") {
-                query = `SELECT * FROM ${tableName} LIMIT ?`;
-                params = [index];
+                query = `SELECT * FROM ${tableName} ORDER BY creationDate DESC LIMIT ? OFFSET ?`;
+                params = [limit, offset];
             }
             else {
-                query = `SELECT * FROM ${tableName} WHERE gameCharacter = ? AND id < ?`;
-                params = [character, index];
+                query = `SELECT * FROM ${tableName} WHERE gameCharacter = ? ORDER BY creationDate DESC LIMIT ? OFFSET ?`;
+                params = [character, limit, offset];
             }
-            db.all(query, params, (err, guides) => {
-                if (err) reject("Could not get guides");
-                else {
-                    resolve(guides);
-                }
-            })
+            db.get(`SELECT COUNT(*) as total FROM ${tableName}`, (err, countResult) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    const totalPosts = countResult.total; // Total number of posts
+                    const totalPages = Math.ceil(totalPosts / limit); // Calculate total pages
+                    
+                db.all(query, params, (err, guides) => {
+                    if (err) reject("Could not get guides");
+                    else {
+                        resolve({guides, totalPages});
+                    }
+                })
+            }
         })
+    })
     }
 
     editPost(db, tableName, id, updatedData) {
@@ -56,14 +65,43 @@ class Posts {
         })
     }
 
-    getYourPosts(db, tableName, id) {
+    getYourPosts(db, tableName, character, id, offset, limit) {
         return new Promise((resolve, reject) => {
-            db.all(`SELECT * FROM ${tableName} WHERE posterID = ?`, [id], (err, guides) => {
-                if (err) reject("Could not get guides");
-                else resolve(guides);
-            })
-        })
+            let params;
+            let query;
+                if (character === "") {
+                query = `SELECT * FROM ${tableName} WHERE posterID = ? ORDER BY creationDate DESC LIMIT ? OFFSET ?`;
+                params = [id, limit, offset];
+            } else {
+                query = `SELECT * FROM ${tableName} WHERE gameCharacter = ? AND posterID = ? ORDER BY creationDate DESC LIMIT ? OFFSET ?`;
+                params = [character, id, limit, offset];
+            }
+    
+            const countQuery = character === "" 
+                ? `SELECT COUNT(*) as total FROM ${tableName} WHERE posterID = ?`
+                : `SELECT COUNT(*) as total FROM ${tableName} WHERE gameCharacter = ? AND posterID = ?`;
+    
+            const countParams = character === "" ? [id] : [character, id];
+    
+            db.get(countQuery, countParams, (err, countResult) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    const totalPosts = countResult.total; 
+                    const totalPages = Math.ceil(totalPosts / limit); 
+    
+                    db.all(query, params, (err, guides) => {
+                        if (err) {
+                            reject("Could not get guides");
+                        } else {
+                            resolve({ guides, totalPages });
+                        }
+                    });
+                }
+            });
+        });
     }
+    
 }
 
 module.exports = Posts; 

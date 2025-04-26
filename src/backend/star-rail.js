@@ -51,8 +51,8 @@ class StarRailPosts extends Posts {
         super.post(db, tablename, character, username, postDetails, userId, postName, element, version);
     }
 
-    getPosts(db, tableName, character, index) {
-        return super.getPosts(db, tablename, character, index);
+    getPosts(db, tableName, character, offset, limit) {
+        return super.getPosts(db, tablename, character, offset, limit);
     }
 
     editPost(db, tableName, id, updatedData) {
@@ -63,8 +63,8 @@ class StarRailPosts extends Posts {
         super.deletePost(db, tablename, id);
     }
 
-    getYourPosts(db, tableName, userId) {
-        return super.getYourPosts(db, tablename, userId);
+    getYourPosts(db, tableName, character, userId, offset, limit) {
+        return super.getYourPosts(db, tablename, character, userId, offset, limit);
     }
 }
 

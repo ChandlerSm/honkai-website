@@ -160,17 +160,18 @@ app.post("/v1/Star-Rail/postGuide", authenticateToken, (request, response) => {
 // character: The character you want to sort by.
 app.get("/v1/Star-Rail/Guides", async (request, response) => { // Preferably would like to add element={element} for querying by element
     try {
-        const character = request.query.character;
-        const guideList = await StarRailPost.getPosts(db, "", character, 10);   
-
+        const {character, page = 1, limit = 5} = request.query;
+        const offset = (page - 1) * limit;
+        const guideList = await StarRailPost.getPosts(db, "", character, offset, limit);   
+        console.log(guideList);
         // Reverse the list using two pointers
-        let start = 0;
-        let end = guideList.length - 1; 
-        while (start < end) { 
-            [guideList[start], guideList[end]] = [guideList[end], guideList[start]];
-            start++;
-            end--;
-        }
+        // let start = 0;
+        // let end = guideList.length - 1; 
+        // while (start < end) { 
+        //     [guideList[start], guideList[end]] = [guideList[end], guideList[start]];
+        //     start++;
+        //     end--;
+        // }
         response.status(200).json({message: "Got guide list", guideList: guideList});
     } catch (err) {
         response.status(404).json({message: "Could not get guide list", err});
@@ -220,7 +221,9 @@ app.put("/v1/Star-Rail/update/:id", authenticateToken, async (request, response)
 // Pulls the current users posts to display
 app.get("/v1/userPosts", authenticateToken, async (request, response) => {
     try {
-        const guides = await StarRailPost.getYourPosts(db, "", request.user.id);
+        const { character, page = 1, limit = 5 } = request.query;
+        const offset = (page - 1) * limit;
+        const guides = await StarRailPost.getYourPosts(db, "", character, request.user.id, offset, limit);
         console.log(guides);
         response.status(200).json({message: "Got your posts!", guidesList: guides});
     } catch (err) {

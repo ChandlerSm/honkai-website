@@ -16,6 +16,11 @@ export const HsrGuides = () => {
         '3.0', '3.1', '3.2'
       ];
 
+        const [totalPosts, setTotalPosts] = useState(0);  
+        const [currentPage, setCurrentPage] = useState(1);
+        const [postsPerPage] = useState(5); 
+      
+
     useEffect(() => {
             // Fetches all characters name from star rail api.
             fetch("http://localhost:3000/Star-Rail/characters")
@@ -23,22 +28,23 @@ export const HsrGuides = () => {
             .then(data => {console.log(data); setCharactersList(data);}); 
     }, []);
 
+    const fetchGuides = async () => {
+        setIsLoading(true);
+        const response = await fetch(`http://localhost:3000/v1/Star-Rail/Guides?character=${character}&page=${currentPage}&limit=${postsPerPage}`, {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' }
+        })
+
+        const result =  await response.json();
+        setGuideList(result.guideList.guides);
+        setTotalPosts(result.guideList.totalPages);
+        setIsLoading(false);
+}
+
     useEffect(() => {
-            const fetchGuides = async () => {
-                setIsLoading(true);
-                const response = await fetch(`http://localhost:3000/v1/Star-Rail/Guides?character=${character}`, {
-                    method: 'GET',
-                    headers: { 'Content-Type': 'application/json' }
-                })
-
-                const result =  await response.json();
-                setGuideList(result.guideList);
-                setIsLoading(false);
-        }
-
         fetchGuides();
         console.log("Guide List", guideList);
-    }, [character]);
+    }, [character, currentPage]);
 
     const handleClick = (guide) => {
         navigate(`/Star-Rail/Guides/${guide.id}`, {state: {guide}});
@@ -48,6 +54,10 @@ export const HsrGuides = () => {
         if (!localStorage.getItem('authToken')) navigate("/Login");
         else navigate("/Star-Rail/Guide/createPost");
     }
+
+    const paginate = (pageNumber) => {
+        setCurrentPage(pageNumber);  
+    };
 
     return (
         <div className="guide-list-holder">
@@ -85,7 +95,31 @@ export const HsrGuides = () => {
                     <h1>No Guides Found</h1>
                 </div>
             )}
+            <div className="pagination-container">
+            <Pagination postsPerPage={postsPerPage} totalPosts={totalPosts} paginate={paginate} />
+            </div>
         </div>
     );
     
 }
+
+// Pagination component
+const Pagination = ({ postsPerPage, totalPosts, paginate }: { postsPerPage: number; totalPosts: number; paginate: (pageNumber: number) => void }) => {
+    const pageNumbers: number[] = [];
+
+    for (let i = 1; i <= totalPosts; i++) {
+        pageNumbers.push(i);
+    }
+
+    return (
+        <nav>
+            <div className='pagination'>
+                {pageNumbers.map(number => (
+                        <button onClick={() => paginate(number)} className='page-link'>
+                            {number}
+                        </button>
+                ))}
+            </div>
+        </nav>
+    );
+};

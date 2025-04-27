@@ -20,11 +20,15 @@ export const Login = () => {
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ username, password }),
             });
+            if (response.ok) {
             const result = await response.json();
             localStorage.setItem('authToken', result.accessToken);
             const data = localStorage.getItem('authToken');
             console.log(`${result.message}: ${data}`);
             navigate("/Home");
+            } else {
+                alert("Invalid Username/password");
+            }
         }
             catch (err) {
                 console.log(err);

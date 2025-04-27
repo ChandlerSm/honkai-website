@@ -1,0 +1,30 @@
+body.dark-mode .account-holder {
+    background-color: #222;
+}
+
+.account-holder {
+    height: 100%;
+    min-height: 100vh;
+    padding: 10px;
+}
+
+.account-login-holder {
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.delete-account-btn {
+    width: 10%;
+    border-radius: 20px;
+    padding: 10px;
+    background-color: hsla(0, 100%, 50%, 0.589);
+    color: white;
+    border: solid 1px black;
+}
+
+.settings {
+    border: solid 1px;
+    padding: 10px;
+}

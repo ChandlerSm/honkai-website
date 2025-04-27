@@ -12,6 +12,7 @@ import { UserPosts } from './frontend/usersPosts.tsx';
 import { Login } from './frontend/login.tsx';
 import { Navbar } from './frontend/navbar.tsx';
 import { CreateUser } from './frontend/createUser.tsx';
+import { Account } from './frontend/account.tsx';
 import { useState } from 'react';
 
 function App() {
@@ -44,6 +45,7 @@ function App() {
               <Route path="/Star-Rail/characters" element={<HsrCharacters />} />
               <Route path="/Star-Rail/Guides" element={<HsrGuides />} />
               <Route path="/Star-Rail/Guides/:id" element={<CharacterGuide />} />
+              <Route path='/Account' element={<Account />} />
             </Routes>
           </div>
         </>

@@ -46,7 +46,10 @@ export const Navbar = ({ toggleNavbar, isOpen }) => {
         )}
 
         {isLoggedIn && (
-          <button className="nav-buttons" onClick={() => {localStorage.removeItem('authToken'); setIsLoggedIn(false);}}>Logout</button>
+          <div>
+          <button className="nav-buttons" onClick={() => {localStorage.removeItem('authToken'); setIsLoggedIn(false); window.location.reload()}}>Logout</button>
+          <button className="nav-buttons" onClick={() => {navigate("/Account")}}>Account</button>
+          </div>
         )}
         {currPrefix !== "" ? (
           <div>

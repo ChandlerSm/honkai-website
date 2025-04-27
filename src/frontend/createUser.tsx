@@ -21,10 +21,13 @@ export const CreateUser = () => {
             });
 
             const result = await response.json();
-            if (result && result.message.includes("success")) {
-                navigate("/login");
+            if (response.status === 200 || response.status === 201) {
+                navigate("/Login");  
+            } else if (response.status === 409) {
+                alert(result.message);  
+            } else {
+                alert("Something went wrong");
             }
-            console.log(result);
         }
             catch (err) {
                 console.log("Could not create user", err);
@@ -33,7 +36,7 @@ export const CreateUser = () => {
 
     return ( 
         <div className="login-holder">
-        <button className="home-user-button" onClick={() => navigate("/Home")}><img src={homeIcon} alt=""/></button>
+        <button className="home-user-button" onClick={() => navigate("/home")}><img src={homeIcon} alt=""/></button>
         <form className="login-form" onSubmit={handleSubmit}>
         <input className="input-holder" type="text" value={username} onChange={(e) => setUsername(e.target.value)}></input>
         <input className="input-holder" type="text" value={password} onChange={(e) => setPassword(e.target.value)}></input>

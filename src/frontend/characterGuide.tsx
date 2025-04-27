@@ -11,6 +11,7 @@ export const CharacterGuide = () => {
     const [updatedGuide, setUpdatedGuide] = useState(guide);
     const [userId, setUserId] = useState(null);
     const navigate = useNavigate(); // For navigation after delete
+    const [role, setRole] = useState('user');
 
     useEffect(() => {
         const token = localStorage.getItem('authToken');
@@ -19,6 +20,7 @@ export const CharacterGuide = () => {
             const payload = token.split('.')[1];
             const decodedPayload = JSON.parse(atob(payload));
             setUserId(decodedPayload.id);
+            setRole(decodedPayload.role);
         }
         // console.log(guide.posterID);
     }, []);
@@ -43,14 +45,21 @@ export const CharacterGuide = () => {
                     },
                     body: JSON.stringify({
                         userId: userId, 
-                        posterId: guide.posterID 
+                        posterId: guide.posterID,
+                        role: role
                     }),
                 }); 
     
                 if (response.ok) {
                     // Handle success, maybe show a success message or reset form
                     alert("Post deleted successfully.");
-                    navigate('/Your-Posts'); // Redirect after successful delete
+                    if (role !== 'admin') {
+                        navigate('/Your-Posts'); // Redirect after successful delete
+                    } 
+                    else if (role === 'admin') {
+                        const currPrefix = location.pathname.includes("Genshin-Impact") ? "Genshin-Impact" : location.pathname.includes("Star-Rail") ? "Star-Rail" : "";
+                        navigate(`/${currPrefix}/Guides`)
+                    }
                 } else {
                     // Handle the error response
                     const errorText = await response.text();
@@ -105,7 +114,7 @@ export const CharacterGuide = () => {
     //     }
     // }, [userId]);
 
-    const showEditDeleteOptions = userId === guide?.posterID;
+    const showEditDeleteOptions = userId === guide?.posterID || role === 'admin';
 
     return (
         <div className="character-guide-holder">

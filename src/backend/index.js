@@ -47,8 +47,11 @@ app.post("/user/create", async (req, res) => {
     try {
         const { username, password } = req.body;
         const hashedPassword = await bcrypt.hash(password, 10);
-        createUser(db, username, hashedPassword);
-        return res.status(200).json({message: "created user successfully"});
+        const result = await createUser(db, username, hashedPassword);
+        if (result === -1) {
+            return res.status(409).json({ message: "User Already Exists" });
+        }
+        return res.status(201).json({ message: "Created user successfully" });
     } catch (err) {
         return res.status(500).json({message: "Internal Server Error", error: err.message});
     }
@@ -93,7 +96,7 @@ app.post(`/user/login`, async (req, res) => {
             // Compare the password using bcrypt
             const isMatching = await bcrypt.compare(password, user.password); // True of false if inputted password matches
             if (isMatching) {
-                const accessToken = jwt.sign({username: user.username, id: user.id}, process.env.ACCESS_SECRET_TOKEN); // Sign a access JWT for future use.
+                const accessToken = jwt.sign({username: user.username, id: user.id, role: user.role}, process.env.ACCESS_SECRET_TOKEN); // Sign a access JWT for future use.
                 return res.status(200).json({message: "Successful login", accessToken: accessToken}); // Returns success message and JWT
             } else {
                 return res.status(401).send("Invalid Login Information");
@@ -186,10 +189,10 @@ app.get("/v1/Star-Rail/Guides", async (request, response) => { // Preferably wou
 app.delete("/v1/Star-Rail/deletePost/:id", authenticateToken, (request, response) => {
     try {
         const {id} = request.params;
-        const { userId, posterId } = request.body;
+        const { userId, posterId, role } = request.body;
         console.log(userId, posterId);
 
-        if (userId !== posterId) { // Checks if your id is the same as the poster id.
+        if (userId !== posterId && role !== 'admin') { // Checks if your id is the same as the poster id.
             return res.status(403).send("Invalid delete, not your post");
         }
         

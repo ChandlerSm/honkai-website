@@ -1,23 +1,35 @@
 const express = require("express");
 const app = new express();
-  
-  // Create a user and then return all users, for testing
-    const createUser = (db, username, hashedPassword) => {
-    db.all("INSERT INTO user (username, password) VALUES (?, ?)", [username, hashedPassword], (err) => {
-        if (err) {
-            if (err.message.includes("UNIQUE")) {
-                return console.log("User Already Exists");
+      const createUser = async (db, username, hashedPassword) => {
+        try {
+            const userExists = await checkIfUserExists(db, username);
+            if (userExists) {
+                console.log("User already exists");
+                return -1;  
             }
-            return console.log("Could not create user", err.message)
+
+            await db.run("INSERT INTO user (username, password) VALUES (?, ?)", [username, hashedPassword]);
+            console.log("User added successfully");
+            return 1;
+            // const users = await getAllUsers(db);
+            // console.log("All users:", users);
+        } catch (err) {
+                console.error("Could not create user:", err.message);
+                return -1;
         }
-        else {
-        console.log("Added user");
-        getAllUsers(db, (users) => {
-            console.log(users);
+    };
+
+    const checkIfUserExists = async (db, username) => {
+        return new Promise((resolve, reject) => {
+            db.get("SELECT 1 FROM user WHERE username = ?", [username], (err, row) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(row !== undefined); // If row is undefined, the user doesn't exist
+                }
+            });
         });
-        }
-    });
-    }
+    };
 
     // FOR TESTING ONLY
     const getAllUsers = (db, callback) => {

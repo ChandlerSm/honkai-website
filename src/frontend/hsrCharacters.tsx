@@ -23,7 +23,10 @@ export const HsrCharacters = () => {
             <div>Welcome to the HSR Character List</div>
             <div className="char-holder">
             {charactersList.map((char, index) => (
-                <div className="char-box" key={index}><p className="character-name">{char.name}</p></div>
+                <div className="char-box" key={index}>
+                    <img src={char.icon} alt=""></img>
+                    <p className="character-name">{char.name}</p>
+                </div>
             ))}
         </div>
         </div>

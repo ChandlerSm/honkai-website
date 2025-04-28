@@ -19,8 +19,8 @@
     "react-router-dom": "^7.5.0",
     "react-scripts": "5.0.1",
     "sqlite3": "^5.1.7",
-    "starrail.js": "^1.9.1",
-    "typescript": "^5.8.2",
+    "starrail.js": "^1.9.2",
+    "typescript": "^4.9.5",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

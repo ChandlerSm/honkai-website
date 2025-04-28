@@ -1,6 +1,6 @@
 const { StarRail } = require("starrail.js");
 const Posts = require("./posts.js");
-const sr_client = new StarRail({defaultLanguage: "en"});
+const sr_client = new StarRail({defaultLanguage: "en", cacheDirectory: "./cache",  showFetchCacheLog: false });
 
 // More so for testing and reading data from api
 // async function fetchCharacters() {
@@ -16,8 +16,20 @@ const sr_client = new StarRail({defaultLanguage: "en"});
 //     }
 // }
 
-// fetchCharacters();
 
+// Initialize cache directory, kind of bricks the whole thing, so cache doesn't really work that well.
+// sr_client.cachedAssetsManager.cacheDirectorySetup();
+
+// // Fetch the content to populate the cache
+// sr_client.cachedAssetsManager.fetchAllContents()
+//   .then(() => {
+//     console.log("Cache updated successfully!");
+//     const characters = sr_client.getAllCharacters();
+//     console.log(characters);
+//   })
+//   .catch((error) => {
+//     console.error("Error updating cache:", error);
+//   });
 
 // Returns JSON data of all characters in Honkai Star Rail
 function getCharacters() {

@@ -29,7 +29,9 @@ export const Character = () => {
 
             // Set the final transformed description
             setCharacterDesc(desc);
-            console.log(characterData);
+            setCharacterData(characterData.filter(item => item.skillType !== "MazeNormal"));
+
+            // console.log(characterData);
         }
     }, [characterData]); // This effect runs when `characterData` is updated
 
@@ -72,14 +74,14 @@ export const Character = () => {
                         <h1 className="skill-name">{skill.skillName}</h1>
                         <p className="skill-type">{skill.skillType}</p>
                     <div>
-                        <label htmlFor={`slider-${index}`}>Select Skill Level: {selectedSkillLevel[index]}</label>
+                        <label htmlFor={`slider-${index}`}>Select Skill Level: {selectedSkillLevel[index] || 1}</label>
                         {/* Conditionally render the slider only if skillLevels length is greater than 0 */}
                         {skill.skillLevels.length > 1 && (
                             <>
                             <input
                                 type="range"
                                 id={`slider-${index}`}
-                                min="0"
+                                min="1"
                                 max={skill.skillLevels.length - 1}
                                 value={selectedSkillLevel[index] || 0}
                                 onChange={(e) => handleSliderChange(index, e.target.value)}

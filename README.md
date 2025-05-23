@@ -20,3 +20,4 @@ In the project directory, you can run:
 Then cd to ./src/backend
 
 ### `node .`
+### `nodemon .`

@@ -23,7 +23,7 @@ export const HsrCharacters = () => {
             <div>Welcome to the HSR Character List</div>
             <div className="char-holder">
             {charactersList.map((char, index) => (
-                <div className="char-box" key={index}>
+                <div className="char-box" key={index} onClick={() => navigate(`/Star-Rail/characters/${char.name}/${char.element}`)}>
                     <img src={char.icon} alt=""></img>
                     <p className="character-name">{char.name}</p>
                 </div>

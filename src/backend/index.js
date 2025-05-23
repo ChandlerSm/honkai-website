@@ -1,6 +1,6 @@
 require("dotenv").config();
 
-const { getCharacters, StarRailPosts } = require("./star-rail.js");
+const { getCharacters, StarRailPosts, fetchCharacter } = require("./star-rail.js");
 const  GenshinPosts  = require("./Genshin.js");
 const {createUser, deleteUser} = require("./user.js");
 const express = require("express");
@@ -134,6 +134,19 @@ app.get("/Star-Rail/characters", (req, res) => {
     }
     catch (err) {
         return res.status(500).json({ message: 'Internal Server Error', error: error.message });
+    }
+})
+
+// Get the data of a single character
+app.get("/Star-Rail/character", async (req, res) => {
+    try {
+        const {characterName, element} = req.query;
+        const characterData = await fetchCharacter(characterName, element);
+        console.log(characterData);
+        if (!characterData.length) return res.status(404).send("Could not find character");
+        return res.status(200).json(characterData);
+    } catch (err) {
+        return res.status(500).send("Internal Server error");
     }
 })
 

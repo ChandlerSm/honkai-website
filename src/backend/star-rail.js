@@ -20,13 +20,29 @@ async function fetchCharacter(characterName, element) {
         character = characters.find(char => char.name.get() === characterName && char.combatType.name.get() === element);
 
         if (character === null) return [];
+
+        // Get eidolons of character
+        const eidolons = character.eidolons;
+        const eidolonArray = [];
+        eidolons.forEach((eidolon) => {
+            eidolonArray.push(
+                {
+                    name: eidolon.name.get(),
+                    description: eidolon.description.get()
+                }
+            )
+        })
+
+        // console.log("eidolon array:", eidolonArray);
+
         // console.log(character);
         // console.log(character.description.get()); 
         const charArt = character.icon.url;
+
         // console.log("Character Image:", charArt);
         const icon = character.splashImage.url; // Gets the image of the character to display on the frontend
 
-        const descriptionArray = [{icon: icon,name: character.name.get(),characterDesc: character.description.get(), characterArt: charArt}];
+        const descriptionArray = [{eidolons: eidolonArray, icon: icon,name: character.name.get(),characterDesc: character.description.get(), characterArt: charArt}];
 
         // Assuming `character` is already defined and contains skills
         character.skills.forEach((skill, index) => { // Iterates over all the 
@@ -63,7 +79,6 @@ async function fetchCharacter(characterName, element) {
             }
             descriptionArray.push(skillArray);
             // console.log(descriptionArray);
-            const firstSkill = character.skills[0];
 
         // // Create a SkillLevel object for a specific level (e.g., level 3 with no extra points).
         // const skillLevel = new SkillLevel(1, 0);
@@ -86,6 +101,24 @@ async function fetchCharacter(characterName, element) {
 }
 
 // fetchCharacter("Welt", "Imaginary");
+
+const testingChar = function() {
+        const characters = sr_client.getAllCharacters();
+        // // If you want to check the type of a specific path or property:
+        let character = characters[0]; // Current character is only March 7th, change to the name of the clicked character later
+
+        // character = characters.find(char => char.name.get() === characterName && char.combatType.name.get() === element);
+        // console.log(character.eidolons[0].name.get());
+        // console.log(character.eidolons[0].description.get());
+        console.log(character.stars.toLocaleString());
+        console.log(character._itemData);
+
+         const serverUrl = "http://localhost:3000/static/"; // Change this to your server URL
+        console.log("Full Item Icon URL: ", serverUrl + character._itemData.ItemIconPath);
+
+}
+
+testingChar();
 
 // Initialize cache directory, kind of bricks the whole thing, so cache doesn't really work that well.
 // sr_client.cachedAssetsManager.cacheDirectorySetup();

@@ -3,39 +3,44 @@ import { useParams } from "react-router-dom";
 import "./character.css";
 import fireflyIcon from "./assets/firefly-removebg-preview.png";
 import DOMPurify from "dompurify"; // Import DOMPurify for sanitizing HTML
+import { skip } from "node:test";
 
 export const Character = () => {
     const { characterName, element } = useParams(); // Get the params from the URL
     const [characterData, setCharacterData] = useState(null);
     const [characterDesc, setCharacterDesc] = useState("");
     const [selectedSkillLevel, setSelectedSkillLevel] = useState({}); // To track selected skill levels
+    const [filteredCharacterData, setFilteredCharacterData] = useState([]);
 
-    console.log(characterName, element);
+
+    // console.log(characterName, element);
     useEffect(() => {
         // Fetch data based on characterName and element
         fetch(`http://localhost:3000/Star-Rail/character?characterName=${characterName}&element=${element}`)
             .then(res => res.json())
-            .then(data => setCharacterData(data))
+            .then(data => 
+                {
+                    setCharacterData(data);
+                    if (data[0]) {
+                        // Set description after fetching
+                        let desc = data[0].characterDesc;
+                        // Remove <unbreak> tags and replace them with nothing
+                        desc = desc.replace(/\\n/g, ' ');
+                        setCharacterDesc(desc);
+                    }
+                })
             .catch(error => console.error("Error fetching character data:", error));
     }, [characterName, element]);
 
     useEffect(() => {
-        if (characterData && characterData[0]) {
-            let desc = characterData[0].characterDesc;
-            
-            // Remove <unbreak> tags and replace them with nothing
-            // Replace \n with a space
-            desc = desc.replace(/\\n/g, ' ');
-
-            // Set the final transformed description
-            setCharacterDesc(desc);
-            setCharacterData(characterData.filter(item => item.skillType !== "MazeNormal"));
-
-            // console.log(characterData);
+        if (characterData && characterData.length > 0) {
+            // Filter out any skills of type "MazeNormal" (or whatever condition you want)
+            const filteredData = characterData.filter(item => item.skillType !== "MazeNormal");
+            setFilteredCharacterData(filteredData);
         }
     }, [characterData]); // This effect runs when `characterData` is updated
 
-    if (!characterData) {
+    if (!characterData || filteredCharacterData.length === 0) {
         return  (              
         <div className="characterHolder-loading">
         <img src={fireflyIcon} alt="Loading" className="loading-image" />
@@ -55,6 +60,8 @@ export const Character = () => {
         if (!text) return ''; 
 
         text = text.replace(/\\n/g, ' ');
+        text = text.replace(/#/g, '');
+        text = text.replace(/\[i\]/g, '');
         return DOMPurify.sanitize(text);
     };
 
@@ -67,9 +74,9 @@ export const Character = () => {
                 <h1 className="charName">{characterData[0].name || 'Character not found'}</h1>
                 <p className="desc-text" dangerouslySetInnerHTML={{ __html: sanitizedCharacterDesc }}></p>
             </div>
-
+            <h1 className="box-header">Skills</h1>
             <div className="skill-container">
-                {characterData.slice(1).map((skill, index) => (
+                {filteredCharacterData.slice(1).map((skill, index) => (
                     <div className="skill-box">
                         <h1 className="skill-name">{skill.skillName}</h1>
                         <p className="skill-type">{skill.skillType}</p>
@@ -106,6 +113,22 @@ export const Character = () => {
                                 />
                             )}
                     </div>
+                    </div>
+                ))}
+            </div>
+            <h1 className="box-header">Eidolons</h1>
+            <div className="skill-container"> 
+                {filteredCharacterData[0]?.eidolons?.map((eidolon, index) => (
+                    <div key={index} className="skill-box">
+                        <h1 className="skill-name">{eidolon.name}</h1>
+                        <p className="skill-type">E{index+1}</p>
+                        <p
+                                dangerouslySetInnerHTML={{
+                                    __html: sanitizeSkillText(
+                                        eidolon.description
+                                    ),
+                                }}
+                            />
                     </div>
                 ))}
             </div>

@@ -118,7 +118,7 @@ const testingChar = function() {
 
 }
 
-testingChar();
+// testingChar();
 
 // Initialize cache directory, kind of bricks the whole thing, so cache doesn't really work that well.
 // sr_client.cachedAssetsManager.cacheDirectorySetup();

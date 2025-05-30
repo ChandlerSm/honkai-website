@@ -11,7 +11,16 @@ export const Character = () => {
     const [characterDesc, setCharacterDesc] = useState("");
     const [selectedSkillLevel, setSelectedSkillLevel] = useState({}); // To track selected skill levels
     const [filteredCharacterData, setFilteredCharacterData] = useState([]);
-
+    const [elementByColor, setElementByColor] = useState("");
+    const elementsToColors = {
+        "Imaginary": "yellow",
+        "Fire": "red",
+        "Ice": "lightblue",
+        "Wind": "green",
+        "Quantum": "purple",
+        "Lightning": "purple",
+        "Physical": "Gray"
+    };
 
     // console.log(characterName, element);
     useEffect(() => {
@@ -20,6 +29,10 @@ export const Character = () => {
             .then(res => res.json())
             .then(data => 
                 {
+                    if (!element) {
+                        console.log("Element is not defined");
+                        return;
+                    }
                     setCharacterData(data);
                     if (data[0]) {
                         // Set description after fetching
@@ -27,6 +40,7 @@ export const Character = () => {
                         // Remove <unbreak> tags and replace them with nothing
                         desc = desc.replace(/\\n/g, ' ');
                         setCharacterDesc(desc);
+                        setElementByColor(elementsToColors[element]);
                     }
                 })
             .catch(error => console.error("Error fetching character data:", error));
@@ -56,6 +70,7 @@ export const Character = () => {
         }));
     };
 
+
     const sanitizeSkillText = (text) => {
         if (!text) return ''; 
 
@@ -78,8 +93,14 @@ export const Character = () => {
             <div className="skill-container">
                 {filteredCharacterData.slice(1).map((skill, index) => (
                     <div className="skill-box">
-                        <h1 className="skill-name">{skill.skillName}</h1>
-                        <p className="skill-type">{skill.skillType}</p>
+                        <h1 className="skill-name"
+                            dangerouslySetInnerHTML={{
+                                __html: sanitizeSkillText(
+                                    skill.skillName
+                                ),
+                            }}
+                        />
+                        <p className="skill-type" style={{color: `${elementByColor}`}}>{skill.skillType}</p>
                     <div>
                         <label htmlFor={`slider-${index}`}>Select Skill Level: {selectedSkillLevel[index] || 1}</label>
                         {/* Conditionally render the slider only if skillLevels length is greater than 0 */}

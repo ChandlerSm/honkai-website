@@ -1623,6 +1623,33 @@
     schema-utils "^4.2.0"
     source-map "^0.7.3"
 
+"@redis/bloom@5.1.1":
+  version "5.1.1"
+  resolved "https://registry.npmjs.org/@redis/bloom/-/bloom-5.1.1.tgz"
+  integrity sha512-PnMcvpL7O2DHtnSL5JtyNmraNrdHuJXi3u2isGTUuPgkbAuWQKfZdknq471ySILL+qKtLfVJqzgDFMjYmZzK6Q==
+
+"@redis/client@^5.1.1", "@redis/client@5.1.1":
+  version "5.1.1"
+  resolved "https://registry.npmjs.org/@redis/client/-/client-5.1.1.tgz"
+  integrity sha512-vojbBqUdbkD+ylCy3+ZDXLzSmgiYH9pLrv87kF+nDgsRaHKrVVxPV9B4u6EfWRx7XGvQGZqsXVkKFhsEOsG3LA==
+  dependencies:
+    cluster-key-slot "1.1.2"
+
+"@redis/json@5.1.1":
+  version "5.1.1"
+  resolved "https://registry.npmjs.org/@redis/json/-/json-5.1.1.tgz"
+  integrity sha512-A5M0dcgxGKq+oE6spIPBcGLDBiwoSPTs2wesVb4x30rXfG6rPtqt1Z7fCMtvTL2kHUNRKgZ78zhD+0+MENZt7g==
+
+"@redis/search@5.1.1":
+  version "5.1.1"
+  resolved "https://registry.npmjs.org/@redis/search/-/search-5.1.1.tgz"
+  integrity sha512-bChudQmcqfYUxEGMeXMkljXtwse4hzqcqRwbZDwRyYe+EEeW/lXVl3w/mS2tHnAb2yqGnfDghid8iHEtVNqjww==
+
+"@redis/time-series@5.1.1":
+  version "5.1.1"
+  resolved "https://registry.npmjs.org/@redis/time-series/-/time-series-5.1.1.tgz"
+  integrity sha512-HPjZLfcZxh5mBLqRgx7KCZG6JXxGnb7yJqo9qZ/KMTWK/k3SWyH47DHJbYbRNzKOEkbK/l/5kikDTm79uJuCbg==
+
 "@rollup/plugin-babel@^5.2.0":
   version "5.3.1"
   resolved "https://registry.npmjs.org/@rollup/plugin-babel/-/plugin-babel-5.3.1.tgz"
@@ -3432,6 +3459,11 @@ cliui@^7.0.2:
     string-width "^4.2.0"
     strip-ansi "^6.0.0"
     wrap-ansi "^7.0.0"
+
+cluster-key-slot@1.1.2:
+  version "1.1.2"
+  resolved "https://registry.npmjs.org/cluster-key-slot/-/cluster-key-slot-1.1.2.tgz"
+  integrity sha512-RMr0FhtfXemyinomL4hrWcYJxmX6deFdCxpJzhDttxgO1+bcCnkk+9drydLVDmAMG7NE6aN/fl4F7ucU/90gAA==
 
 co@^4.6.0:
   version "4.6.0"
@@ -8795,6 +8827,17 @@ redent@^3.0.0:
   dependencies:
     indent-string "^4.0.0"
     strip-indent "^3.0.0"
+
+redis@^5.1.1:
+  version "5.1.1"
+  resolved "https://registry.npmjs.org/redis/-/redis-5.1.1.tgz"
+  integrity sha512-4t6n2Q9aFqpQnqBR/g84zsXW+U0hdSzYymqoGGZk44p+kuzzHbgukjOAca+PlQ563TbXcgv1njerllYWjAWw4g==
+  dependencies:
+    "@redis/bloom" "5.1.1"
+    "@redis/client" "5.1.1"
+    "@redis/json" "5.1.1"
+    "@redis/search" "5.1.1"
+    "@redis/time-series" "5.1.1"
 
 reflect.getprototypeof@^1.0.6, reflect.getprototypeof@^1.0.9:
   version "1.0.10"

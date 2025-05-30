@@ -1,0 +1,85 @@
+body.dark-mode .characterHolder {
+    background-color: #222;
+}
+
+body.dark-mode .characterHolder-loading {
+    background-color: #222;
+}
+
+.characterHolder {
+    min-height: 100vh;
+    height: 100%;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.characterHolder-loading {
+    min-height: 100vh;
+    height: 100%;
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.char-desc-holder {
+    height: auto;
+    padding: 50px;
+    box-sizing: border-box;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    border-bottom: solid 1px;
+}
+
+.charName {
+    background-color: transparent;
+    border: none;
+    box-shadow: none;
+}
+
+.desc-text {
+    height: 100%;
+}
+
+.char-image {
+    height: 500px;
+    width: 500px;
+    /* background: #222;
+    background: linear-gradient(90deg, rgba(34, 34, 34, 1) 0%, rgba(34, 34, 34, 1) 50%, rgba(94, 14, 14, 1) 100%); */
+}
+
+.skill-container {
+    margin-top: 20px;
+    height: auto;
+    padding: 50px; /* Fixed typo from `pad` to `padding` */
+    display: flex;
+    flex-wrap: wrap; /* This allows the items to wrap to the next line */
+    gap: 10px; /* Adds space between items */
+    border-bottom: solid 1px;
+}
+
+.skill-box {
+    border: solid 1px;
+    width: 44%; /* Adjusted to fit two boxes per row with some gap */
+    text-align: left;
+    padding: 20px;
+}
+
+body.dark-mode .skill-type {
+    border-color: rgb(199, 199, 235);
+}
+
+.box-header {
+    margin-right: 90px;
+}
+
+.skill-name {
+    font-size: 15px;
+}
+
+.skill-type {
+    border-bottom: solid 1px;
+}

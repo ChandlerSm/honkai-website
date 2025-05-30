@@ -1,6 +1,6 @@
 require("dotenv").config();
 
-const { getCharacters, StarRailPosts } = require("./star-rail.js");
+const { getCharacters, StarRailPosts, fetchCharacter } = require("./star-rail.js");
 const  GenshinPosts  = require("./Genshin.js");
 const {createUser, deleteUser} = require("./user.js");
 const express = require("express");
@@ -14,6 +14,25 @@ app.use(cors());
 app.use(express.json());
 
 const sqlite3 = require("sqlite3").verbose();
+
+const cache = new Map();
+
+function setCacheExpiration(key, value, time = 3600) {
+    const expiryTime = Date.now() + time * 1000;
+    cache.set(key, {value, expiryTime})
+}
+
+function checkExpiration(key) {
+        const cached =  cache.get(key);
+        if (cached) {
+            if (Date.now() >= cached.expiryTime) {
+                cache.delete(key);
+                return null;
+            }
+        else return cached.value;
+    }
+    return null;
+}
 
 // SQLite Database connecting
 const db = new sqlite3.Database('./database/database.db', (err) => {
@@ -123,17 +142,52 @@ app.post("/Genshin-Impact/postGuide", authenticateToken, (request, response) => 
 
 // Everything Below is for Star Rail
 // Returns a json list of all characters along with name, element, path
+
 app.get("/Star-Rail/characters", (req, res) => {
     try {
-    const characterList = getCharacters(); // get all characters names, elements, path for Star Rail
-    if (!characterList.length) {
-        return res.status(404).json({message: "No characters found"});
-    }
-    const cleanCharacterList = flatted.stringify(characterList); // Cleans it from circular references to allow for readable json
-    res.status(200).json(flatted.parse(cleanCharacterList)); 
+        const cacheKey = "characterList";
+
+        const cachedCharacters = checkExpiration(cacheKey);
+        if (cachedCharacters) {
+            console.log("Characters are currently cached.");
+            return res.status(200).json(cachedCharacters);
+        }
+        const characterList = getCharacters(); // get all characters names, elements, path for Star Rail
+        if (!characterList.length) {
+            return res.status(404).json({message: "No characters found"});
+        }
+        const cleanCharacterList = flatted.stringify(characterList); // Cleans it from circular references to allow for readable json
+        const parsedList = flatted.parse(cleanCharacterList);
+        setCacheExpiration(cacheKey, parsedList);
+        return res.status(200).json(parsedList); 
     }
     catch (err) {
         return res.status(500).json({ message: 'Internal Server Error', error: error.message });
+    }
+})
+
+// Get the data of a single character
+app.get("/Star-Rail/character", async (req, res) => {
+    try {
+        const {characterName, element} = req.query;
+        const cacheKey = `${characterName}:${element}`
+        // if (cache.has(characterName)) {
+        //     console.log(`${characterName} is currently in cache.`)
+        //             // console.log(cache);
+        //     return res.status(200).json(cache.get(characterName))
+        // }
+        const cacheCharacter = checkExpiration(cacheKey); 
+        if (cacheCharacter) {
+            console.log(`${characterName} with ${element} is cached`);
+            return res.status(200).json(cacheCharacter);
+        }
+        const characterData = await fetchCharacter(characterName, element);
+        // console.log(characterData);
+        if (!characterData.length) return res.status(404).send("Could not find character");
+        setCacheExpiration(cacheKey, characterData);
+        return res.status(200).json(characterData);
+    } catch (err) {
+        return res.status(500).send("Internal Server error");
     }
 })
 

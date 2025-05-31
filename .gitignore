@@ -6,6 +6,7 @@ node_modules
 *.sql
 database
 cache
+uploads
 
 # Data Sensitive
 .env

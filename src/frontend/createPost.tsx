@@ -12,6 +12,7 @@ export const CreatePost = () => {
     const [errorMessage, setErrorMessage] = useState(""); // State for error messages
     const [characterList, setCharactersList] = useState([]);
     const elementList = ["Ice", "Imaginary", "Quantum", "Fire", "Wind", "Lightning", "Physical"];
+    const [imagePath, setImagePath] = useState("");
     const hsrVersions = [
         '1.0', '1.1', '1.2', '1.3', '1.4', '1.5', '1.6',
         '2.0', '2.1', '2.2', '2.3', '2.4', '2.5', '2.6', '2.7',
@@ -47,15 +48,26 @@ export const CreatePost = () => {
         if (!validateForm()) {
             return; // Don't proceed with the fetch if validation fails
         }
+        
+        const formData = new FormData();
+        formData.append('postName', postName);
+        formData.append('character', character);
+        formData.append('element', element);
+        formData.append('version', version);
+        formData.append('details', details);
+
+        // Append the image file if it's selected
+        if (imagePath) {
+            formData.append('image', imagePath);
+        }
 
         try {
             const response = await fetch('http://localhost:3000/v1/Star-Rail/postGuide', {
                 method: 'POST',
                 headers: { 
-                    'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}` 
                 },
-                body: JSON.stringify({ postName, character, element, version, details }),
+                body: formData,
             });
             const result = await response.json();
             // Handle the response after post creation, e.g., reset form or show success message
@@ -69,6 +81,12 @@ export const CreatePost = () => {
         <div className="create-post-holder">
             <h2>Create Post</h2>
             <form className="post-form" onSubmit={createPost}>
+                <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => setImagePath(e.target.files[0])} // Save the file to the state
+                    className="top-input"
+                />
                 <div className="top-holder">
                     <input 
                         value={postName} 

@@ -40,6 +40,11 @@ body.dark-mode .character-guide-holder {
     margin-top: 2px;
 }
 
+.post-image-individual {
+    height: auto;
+    width: auto;
+}
+
 .dropdown-toggle {
     gap: 5px;
 }

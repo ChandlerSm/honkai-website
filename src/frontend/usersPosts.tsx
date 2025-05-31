@@ -109,10 +109,19 @@ export const UserPosts = () => {
                             <div className="guide-list">
                                 {usersPosts.map((guide, index) => (
                                     <div key={index} className="guide-box" style={{ cursor: "pointer" }} onClick={() => handleClick(guide)}>
-                                        <h1>{guide.name}</h1>
-                                        <p>By: {guide.username}</p>
-                                        <p>Version: {guide.gameVersion}</p>
-                                        <p>Created: {guide.creationDate}</p>
+                                        <div className="guide-details">
+                                            <h1>{guide.name}</h1>
+                                            <p>By: {guide.username}</p>
+                                            <p>Version: {guide.gameVersion}</p>
+                                            <p>Created: {guide.creationDate}</p>
+                                        </div>
+                                        <div className="image-holder">
+                                            {guide.imagePath ? (
+                                                <img src={`http://localhost:3000/${guide.imagePath}`} alt="" className="post-image"/>
+                                            ) : (
+                                                <p></p> // Or any placeholder content
+                                            )}
+                                        </div>
                                     </div>
                                 ))}
                             </div>

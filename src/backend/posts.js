@@ -6,10 +6,10 @@ class Posts {
     // postDetails: The text of the post being made
     // username: username of the poster
     // userId: user ID of the poster
-    post(db, tableName, character, username, postDetails, userId, postName, element, version) {
+    post(db, tableName, character, username, postDetails, userId, postName, element, version, imagePath) {
             db.all(`INSERT INTO StarRailGuides (name, username, postDetails, posterID, gameCharacter,
-                charElement, gameVersion) 
-                 VALUES (?, ?, ?, ?, ?, ?, ?);`, [postName, username, postDetails, userId, character, element, version], 
+                charElement, gameVersion, imagePath) 
+                 VALUES (?, ?, ?, ?, ?, ?, ?, ?);`, [postName, username, postDetails, userId, character, element, version, imagePath], 
                  (err) => {
                     if (err) console.log("Could not make post", err);
                     else console.log("successfully uploaded");

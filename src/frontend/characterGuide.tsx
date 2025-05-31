@@ -132,7 +132,13 @@ export const CharacterGuide = () => {
                     <div onClick={handleDelete}>Delete</div>
                 </div>
             )}
-
+            <div className="image-holder">
+                {guide.imagePath ? (
+                    <img src={`http://localhost:3000/${guide.imagePath}`} alt="" className="post-image-individual"/>
+                ) : (
+                    <p></p> // Or any placeholder content
+            )}
+            </div>
             <h1>{guide.name}</h1>
             <h2>{guide.gameCharacter}</h2>
             <p>By: {guide.username}</p>

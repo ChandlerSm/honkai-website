@@ -37,6 +37,8 @@ body.dark-mode .guide-box {
     box-sizing: border-box;
     padding: 20px;
     border-radius: 10px;
+    display: flex;
+    flex-direction: row;
 }
 
 .guide-list-empty {
@@ -68,5 +70,14 @@ body.dark-mode .guide-box {
 }
 
 .sort-bar {
+    width: 70%;
+}
+
+.post-image {
+    width: 100%;
+    height: 100%;
+}
+
+.guide-details {
     width: 70%;
 }

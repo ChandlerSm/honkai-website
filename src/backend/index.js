@@ -10,6 +10,9 @@ const cors = require("cors");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
+const path = require('path');
+const multer = require('multer');
+
 app.use(cors());
 app.use(express.json());
 
@@ -33,6 +36,25 @@ function checkExpiration(key) {
     }
     return null;
 }
+
+// Set up multer storage configuration
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    // Store uploaded files in the 'uploads' directory
+    cb(null, 'uploads/');
+  },
+  filename: (req, file, cb) => {
+    // Use the original filename for the image
+    cb(null, Date.now() + '-' + file.originalname);
+  }
+});
+
+const upload = multer({ storage: storage });
+
+app.post('/upload', upload.single('image'), (req, res) => {
+    const imagePath = path.join('uploads', req.file.filename); // Path to store in DB
+    res.status(200).send("successful upload");
+});
 
 // SQLite Database connecting
 const db = new sqlite3.Database('./database/database.db', (err) => {
@@ -201,11 +223,15 @@ const StarRailPost = new StarRailPosts();
 // Element: The element that the character is.
 // Version: The version of the game you are making the guide for.
 // details: The main details/body of the post.
-app.post("/v1/Star-Rail/postGuide", authenticateToken, (request, response) => {
+
+app.use('/uploads', express.static('uploads')); // Serve images from the 'uploads' directory
+
+app.post("/v1/Star-Rail/postGuide", authenticateToken, upload.single('image'), (request, response) => {
     try {
         const { postName, character, element, version, details } = request.body;
+        const imagePath = request.file ? `uploads/${request.file.filename}` : ''; // Corrected path
         console.log(request.body);
-        StarRailPost.post(db, "", character, request.user.username, details, request.user.id, postName, element, version);
+        StarRailPost.post(db, "", character, request.user.username, details, request.user.id, postName, element, version, imagePath);
         response.sendStatus(200);
     } catch (err) {
         response.status(500).json({message: "Could not upload to server"});
@@ -221,14 +247,6 @@ app.get("/v1/Star-Rail/Guides", async (request, response) => { // Preferably wou
         const offset = (page - 1) * limit;
         const guideList = await StarRailPost.getPosts(db, "", character, offset, limit);   
         console.log(guideList);
-        // Reverse the list using two pointers
-        // let start = 0;
-        // let end = guideList.length - 1; 
-        // while (start < end) { 
-        //     [guideList[start], guideList[end]] = [guideList[end], guideList[start]];
-        //     start++;
-        //     end--;
-        // }
         response.status(200).json({message: "Got guide list", guideList: guideList});
     } catch (err) {
         response.status(404).json({message: "Could not get guide list", err});

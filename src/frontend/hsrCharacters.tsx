@@ -1,12 +1,11 @@
 import "./hsrCharacters.css";
 import React, {useState, useEffect} from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import fireflyIcon from "./assets/firefly-removebg-preview.png";
 
 export const HsrCharacters = () => {
     const [charactersList, setCharactersList] = useState([]);
     const navigate = useNavigate();
-    const location = useLocation();
     useEffect(() => {
         // Fetches all characters name from star rail api.
         fetch("http://localhost:3000/Star-Rail/characters")
@@ -18,7 +17,7 @@ export const HsrCharacters = () => {
 
     return (
         <div>
-    {charactersList.length != 0 ? (
+    {charactersList.length !== 0 ? (
         <div className="hsr-char-holder">
             <div>Welcome to the HSR Character List</div>
             <div className="char-holder">

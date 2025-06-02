@@ -124,7 +124,6 @@ app.delete("/user/delete/:id/:username", authenticateToken, async (req, res) => 
         // Send token and verify that the token id and id in the param are the same.
         const { id, username } = req.params;
         const {user} = req; // Should hold id and username from JWToken to verify
-        // if (user.id !== id) return res.status(403).send("Cannot delete a different account");
         deleteUser(db, id, username);
         res.status(200).send("Successfully deleted account");
     } catch (err) {
@@ -179,7 +178,6 @@ app.post("/Genshin-Impact/postGuide", authenticateToken, (request, response) => 
 
 // Everything Below is for Star Rail
 // Returns a json list of all characters along with name, element, path
-
 app.get("/Star-Rail/characters", (req, res) => {
     try {
         const cacheKey = "characterList";
@@ -208,18 +206,12 @@ app.get("/Star-Rail/character", async (req, res) => {
     try {
         const {characterName, element} = req.query;
         const cacheKey = `${characterName}:${element}`
-        // if (cache.has(characterName)) {
-        //     console.log(`${characterName} is currently in cache.`)
-        //             // console.log(cache);
-        //     return res.status(200).json(cache.get(characterName))
-        // }
         const cacheCharacter = checkExpiration(cacheKey); 
         if (cacheCharacter) {
             console.log(`${characterName} with ${element} is cached`);
             return res.status(200).json(cacheCharacter);
         }
         const characterData = await fetchCharacter(characterName, element);
-        // console.log(characterData);
         if (!characterData.length) return res.status(404).send("Could not find character");
         setCacheExpiration(cacheKey, characterData);
         return res.status(200).json(characterData);

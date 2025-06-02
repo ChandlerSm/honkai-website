@@ -69,7 +69,7 @@ export const CreatePost = () => {
                 },
                 body: formData,
             });
-            const result = await response.json();
+            await response.json();
             // Handle the response after post creation, e.g., reset form or show success message
         } catch (err) {
             console.log(err);

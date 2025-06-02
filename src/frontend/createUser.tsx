@@ -39,7 +39,7 @@ export const CreateUser = () => {
         <button className="home-user-button" onClick={() => navigate("/home")}><img src={homeIcon} alt=""/></button>
         <form className="login-form" onSubmit={handleSubmit}>
         <input className="input-holder" type="text" value={username} onChange={(e) => setUsername(e.target.value)}></input>
-        <input className="input-holder" type="text" value={password} onChange={(e) => setPassword(e.target.value)}></input>
+        <input className="input-holder" type="password" value={password} onChange={(e) => setPassword(e.target.value)}></input>
         <button className="user-button" type="submit">Create User</button>
     </form>
     </div>

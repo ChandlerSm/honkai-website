@@ -11,8 +11,7 @@ const app = new express();
             await db.run("INSERT INTO user (username, password) VALUES (?, ?)", [username, hashedPassword]);
             console.log("User added successfully");
             return 1;
-            // const users = await getAllUsers(db);
-            // console.log("All users:", users);
+
         } catch (err) {
                 console.error("Could not create user:", err.message);
                 return -1;

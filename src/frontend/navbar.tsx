@@ -1,6 +1,6 @@
 import { ThemeContext } from "./ThemeProvider.tsx"; 
 import React, { useContext, useState, useEffect } from "react";
-import { useNavigate, useLocation, useSubmit } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import homeIcon from "./assets/image-removebg-preview.png"; // Import image
 import fireflyIcon from "./assets/firefly-removebg-preview.png";
 import homeIcon2 from "./assets/both-games.png";

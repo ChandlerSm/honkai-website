@@ -97,7 +97,7 @@ export const CharacterGuide = () => {
                 },
                 body: JSON.stringify({ 'updatedData' : updatedGuide.postDetails }),
             });
-            const result = await response.json();
+            await response.json();
             // Handle the response after post creation, e.g., reset form or show success message
         } catch (err) {
             console.log(err);

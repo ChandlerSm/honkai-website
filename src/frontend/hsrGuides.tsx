@@ -10,15 +10,10 @@ export const HsrGuides = () => {
     const [character, setCharacter] = useState("");
     const [characterList, setCharactersList] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
-    const hsrVersions = [
-        '1.0', '1.1', '1.2', '1.3', '1.4', '1.5', '1.6',
-        '2.0', '2.1', '2.2', '2.3', '2.4', '2.5', '2.6', '2.7',
-        '3.0', '3.1', '3.2'
-      ];
 
-        const [totalPosts, setTotalPosts] = useState(0);  
-        const [currentPage, setCurrentPage] = useState(1);
-        const [postsPerPage] = useState(5); 
+    const [totalPosts, setTotalPosts] = useState(0);  
+    const [currentPage, setCurrentPage] = useState(1);
+    const [postsPerPage] = useState(5); 
       
 
     useEffect(() => {

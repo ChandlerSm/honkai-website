@@ -40,7 +40,7 @@ export const Login = () => {
             <button className="home-user-button" onClick={() => navigate("/Home")}><img src={homeIcon} alt=""/></button>
             <form onSubmit={handleSubmit} className="login-form">
                 <input className="input-holder" type="text" value={username} onChange={(e) => setUsername(e.target.value)}></input>
-                <input className="input-holder" type="text" value={password} onChange={(e) => setPassword(e.target.value)}></input>
+                <input className="input-holder" type="password" value={password} onChange={(e) => setPassword(e.target.value)}></input>
                 <button className="user-button" type="submit">Login</button>
                 <p onClick={() => navigate("/create-user")} style={{cursor: "pointer"}}>Create an Account</p>
             </form>

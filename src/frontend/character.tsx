@@ -3,7 +3,6 @@ import { useParams } from "react-router-dom";
 import "./character.css";
 import fireflyIcon from "./assets/firefly-removebg-preview.png";
 import DOMPurify from "dompurify"; // Import DOMPurify for sanitizing HTML
-import { skip } from "node:test";
 
 export const Character = () => {
     const { characterName, element } = useParams(); // Get the params from the URL
@@ -85,7 +84,7 @@ export const Character = () => {
     return (
         <div className="characterHolder">
             <div className="char-desc-holder">
-                <img className="char-image" src={characterData[0].icon}></img>
+                <img className="char-image" src={characterData[0].icon} alt=""></img>
                 <h1 className="charName">{characterData[0].name || 'Character not found'}</h1>
                 <p className="desc-text" dangerouslySetInnerHTML={{ __html: sanitizedCharacterDesc }}></p>
             </div>

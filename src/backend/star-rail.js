@@ -33,13 +33,7 @@ async function fetchCharacter(characterName, element) {
             )
         })
 
-        // console.log("eidolon array:", eidolonArray);
-
-        // console.log(character);
-        // console.log(character.description.get()); 
         const charArt = character.icon.url;
-
-        // console.log("Character Image:", charArt);
         const icon = character.splashImage.url; // Gets the image of the character to display on the frontend
 
         const descriptionArray = [{eidolons: eidolonArray, icon: icon,name: character.name.get(),characterDesc: character.description.get(), characterArt: charArt}];
@@ -57,43 +51,19 @@ async function fetchCharacter(characterName, element) {
                     skillEffectType: skill.effectType,
                     skillIcon: skillIconUrl,
                     skillLevels: []
-                }
-            ;
-            // console.log(`Skill ${index + 1}:`); // Skill index
-            // console.log("Skill ID:", skill.id); // Skill ID
-            // console.log("Skill Name:", skill.name.get()); // Skill name
-            // const skillType = skill.skillType === "Ultra" ? "Ultimate" : skill.skillType === "Maze" ? "Technique" : skill.skillType === "BPSkill" ? "Skill" : skill.skillType;
-            //  console.log("Skill Type:", skillType); // skill type
-            // console.log("Skill Effect Type:", skill.effectType); // skill effect type
-            // const skillIconUrl = skill.skillIcon.url;
-            // console.log("Skill Icon URL:", skillIconUrl);
+                };
+
             const maxLevel = skill.maxLevel; // The max level of the current skill
             for (let i = 0, level = 1; i < maxLevel; i++, level++) { // until level === maxLevel it will print the level variants of the skill
                 let skillLevel = new SkillLevel(level, 0); // Constructs a skillLevel object to pass, level is the current level of the skill, and 0 for added levels.
                 let leveledSkill = skill.getSkillByLevel(skillLevel); // leveledSkill gets the skill by the current skill level.
-                // console.log("Leveled Skill Description:", leveledSkill.description.getReplacedText()); // Will log the description of the current skill and it's level variant.
-                // skillByLevel.push(leveledSkill.description.getReplacedText());
+
                 skillArray.skillLevels.push({
                     level: level,
                     description: leveledSkill.description.getReplacedText()});
             }
             descriptionArray.push(skillArray);
-            // console.log(descriptionArray);
-
-        // // Create a SkillLevel object for a specific level (e.g., level 3 with no extra points).
-        // const skillLevel = new SkillLevel(1, 0);
-
-        // // Fetch the skill at that level.
-        // const leveledSkill = firstSkill.getSkillByLevel(skillLevel);
-
-        // // Log the details of the leveled skill.
-        // console.log("Leveled Skill ID:", leveledSkill.id);
-        // console.log("Leveled Skill Name:", leveledSkill.name.get());
-        // console.log("Leveled Skill Description:", leveledSkill.description.getReplacedText());
-        // console.log("Leveled Skill Effect Type:", leveledSkill.effectType);
-        // console.log("Leveled Skill Type:", leveledSkill.skillType);
         });
-        // console.log(JSON.stringify(descriptionArray, null, 2));
         return descriptionArray;
     } catch (error) {
         console.error("Error fetching characters:", error);
@@ -119,20 +89,6 @@ const testingChar = function() {
 }
 
 // testingChar();
-
-// Initialize cache directory, kind of bricks the whole thing, so cache doesn't really work that well.
-// sr_client.cachedAssetsManager.cacheDirectorySetup();
-
-// // Fetch the content to populate the cache
-// sr_client.cachedAssetsManager.fetchAllContents()
-//   .then(() => {
-//     console.log("Cache updated successfully!");
-//     const characters = sr_client.getAllCharacters();
-//     console.log(characters);
-//   })
-//   .catch((error) => {
-//     console.error("Error updating cache:", error);
-//   });
 
 // Returns JSON data of all characters in Honkai Star Rail
 function getCharacters() {

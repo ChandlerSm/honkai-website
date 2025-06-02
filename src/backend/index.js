@@ -9,6 +9,7 @@ const app = new express();
 const cors = require("cors");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const fs = require('fs');
 
 const path = require('path');
 const multer = require('multer');
@@ -51,6 +52,20 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
+const deleteImage = (imagePath) => {
+  const fullImagePath = imagePath; // Construct the full file path
+    console.log(fullImagePath);
+
+  fs.unlink(fullImagePath, (err) => {
+    if (err) {
+      console.error('Error deleting file:', err);
+      return;
+    }
+    console.log('File deleted successfully');
+  });
+};
+
+// test for uploading
 app.post('/upload', upload.single('image'), (req, res) => {
     const imagePath = path.join('uploads', req.file.filename); // Path to store in DB
     res.status(200).send("successful upload");
@@ -261,14 +276,15 @@ app.get("/v1/Star-Rail/Guides", async (request, response) => { // Preferably wou
 app.delete("/v1/Star-Rail/deletePost/:id", authenticateToken, (request, response) => {
     try {
         const {id} = request.params;
-        const { userId, posterId, role } = request.body;
+        const { userId, posterId, role, imagePath } = request.body;
         console.log(userId, posterId);
 
         if (userId !== posterId && role !== 'admin') { // Checks if your id is the same as the poster id.
-            return res.status(403).send("Invalid delete, not your post");
+            return response.status(403).send("Invalid delete, not your post");
         }
         
         StarRailPost.deletePost(db, "", id);
+        deleteImage(imagePath);
         response.status(200).send("Successfully deleted post");
     }
     catch (err) {

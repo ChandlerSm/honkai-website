@@ -22,7 +22,7 @@ export const CharacterGuide = () => {
             setUserId(decodedPayload.id);
             setRole(decodedPayload.role);
         }
-        // console.log(guide.posterID);
+        // console.log(guide.imagePath);
     }, []);
 
     const handleDropdownToggle = () => {
@@ -46,7 +46,8 @@ export const CharacterGuide = () => {
                     body: JSON.stringify({
                         userId: userId, 
                         posterId: guide.posterID,
-                        role: role
+                        role: role,
+                        imagePath: guide.imagePath
                     }),
                 }); 
     
